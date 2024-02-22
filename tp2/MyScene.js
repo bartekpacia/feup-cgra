@@ -101,10 +101,14 @@ export class MyScene extends CGFscene {
     ];
 
     this.multMatrix(sca);
+    //up202007972
 
     // ---- BEGIN Primitive drawing section
-
-    if(this.displayDiamond) this.diamond.display();
+this.pushMatrix()
+this.translate(2,0,0)
+this.rotate(Math.PI/2,1,0,0)
+this.scale(2,2,2)
+    this.diamond.display();
     if (this.displayTriangle) this.triangle.display();
     if (this.displayParallelogram) this.parallelogram.display();
     if (this.displayTriangleSmall) this.triangleSmall.display();
