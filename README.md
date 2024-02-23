@@ -1,9 +1,10 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T01G12
+
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| Irene Scarion        | 201901010 | up202311903@edu.fe.up.pt                |
+| Irene Scarion        | 202311903 | up202311903@edu.fe.up.pt                |
 | Bartek Pacia         | 202311689 | up202311689@edu.fe.up.pt                |
 
 ----
