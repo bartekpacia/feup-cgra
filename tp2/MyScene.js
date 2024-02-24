@@ -100,12 +100,22 @@ export class MyScene extends CGFscene {
       1.0,
     ];
 
+    let translateMatrix = [
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 1, 1,
+    ];
+
+    this.pushMatrix();
     this.multMatrix(scaleMatrix);
+    this.multMatrix(translateMatrix);
+    if (this.displayDiamond) this.diamond.display();
+    this.popMatrix();
 
     // ---- BEGIN Primitive drawing section
 
-    if (this.displayDiamond) this.diamond.display();
-    if (this.displayTriangle) this.triangle.display();
+    // if (this.displayTriangle) this.triangle.display();
     // if (this.displayParallelogram) this.parallelogram.display();
     // if (this.displayTriangleSmall) this.triangleSmall.display();
     // if (this.displayTriangleBig) this.triangleBig.display();
