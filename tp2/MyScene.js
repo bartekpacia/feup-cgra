@@ -5,6 +5,8 @@ import { MyParallelogram } from "./MyParallelogram.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 
+import { Square } from "./Square.js";
+
 /**
  * MyScene
  * @constructor
@@ -30,18 +32,15 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
+    this.pinkTriangle = new MyTriangle(this);
+    this.blueTriangle = new MyTriangle(this);
+    this.orangeTriangle = new MyTriangle(this);
     this.parallelogram = new MyParallelogram(this);
-    this.triangleSmall = new MyTriangleSmall(this);
-    this.triangleBig = new MyTriangleBig(this);
+
+    this.square = new Square(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayDiamond = true;
-    this.displayTriangle = true;
-    this.displayParallelogram = false;
-    this.displayTriangleSmall = false;
-    this.displayTriangleBig = false;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -55,8 +54,8 @@ export class MyScene extends CGFscene {
       0.4,
       0.1,
       500,
-      vec3.fromValues(15, 15, 15),
-      vec3.fromValues(0, 0, 0)
+      vec3.fromValues(0, 0, 30),
+      vec3.fromValues(0, 0, 0),
     );
   }
   setDefaultAppearance() {
@@ -81,45 +80,55 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    var scaleMatrix = [
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-    ];
+    // SQUARE FOR TESTING
+    // this.square.display();
+
+    // var scaleMatrix = [
+    //   this.scaleFactor, 0,                0,                0,
+    //   0,                this.scaleFactor, 0,                0,
+    //   0,                0,                this.scaleFactor, 0,
+    //   2.5,  /* x */     4.5 /* y */,        0,                1, 
+    // ];
 
     let translateMatrix = [
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
-      0, 0, 1, 1,
+      2.5, 4.5, 1, 1,
     ];
 
     this.pushMatrix();
-    this.multMatrix(scaleMatrix);
+    // this.multMatrix(scaleMatrix);
     this.multMatrix(translateMatrix);
-    if (this.displayDiamond) this.diamond.display();
+    this.setDiffuse(0, 0.8, 0, 1);
+    this.diamond.display();
     this.popMatrix();
 
-    // ---- BEGIN Primitive drawing section
+    // PINK TRIANGLE
+    this.pushMatrix();
+    this.scale(1.5, 1.5, 1);
+    this.translate(1, 1, 0);
+    this.rotate(Math.PI / 2, 0, 0, 1);
+    this.setDiffuse(1, 192/255, 204/255, 1);
+    this.pinkTriangle.display();
+    this.popMatrix();
+    
+    // BLUE TRIANGLE
+    this.pushMatrix();
+    this.scale(2, 2, 1);
+    this.translate(1, -1, 0);
+    this.rotate(Math.PI, 0, 0, 1);
+    this.setDiffuse(0, 0, 1, 1);
+    this.blueTriangle.display();
+    this.popMatrix();
 
-    // if (this.displayTriangle) this.triangle.display();
-    // if (this.displayParallelogram) this.parallelogram.display();
-    // if (this.displayTriangleSmall) this.triangleSmall.display();
-    // if (this.displayTriangleBig) this.triangleBig.display();
+    // ORANGE TRIANGLE
+    this.pushMatrix();
+    this.scale(2, 2, 1);
+    this.setDiffuse(1, 165 / 255, 0, 1);
+    this.orangeTriangle.display();
+    this.popMatrix();
 
-    // ---- END Primitive drawing section
+    // RED TRIANGLE
   }
 }
