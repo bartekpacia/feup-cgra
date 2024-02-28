@@ -14,7 +14,7 @@ export class MyTangram extends CGFobject {
 	}
 
     display() {
-        super.display();
+        // super.display(); - commented out to ignore the default object
 
         // GREEN DIAMOND
         const translationMatrix = [
