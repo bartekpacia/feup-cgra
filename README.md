@@ -11,7 +11,7 @@
 
   - [tp1](tp1/README.md)
 
-    ![tp1 screenshot](tp1/screenshots/cgra-t01g12-tp1-2.JPG)
+    ![tp1 screenshot](tp1/screenshots/cg-t01g12-tp1-2.jpg)
      
   - [tp2](tp2/README.md)
   - [tp3](tp3/README.md)
