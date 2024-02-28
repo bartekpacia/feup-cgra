@@ -3,10 +3,7 @@ import { MyTangram } from "./MyTangram.js";
 import { MyUnitCube } from "./MyUnitCube.js";
 import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
-/**
- * MyScene
- * @constructor
- */
+
 export class MyScene extends CGFscene {
   constructor() {
     super();
