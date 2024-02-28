@@ -1,9 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyDiamond } from "./MyDiamond.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyParallelogram } from "./MyParallelogram.js";
-import { MyTriangleSmall } from "./MyTriangleSmall.js";
-import { MyTriangleBig } from "./MyTriangleBig.js";
+import { MyTangram } from "./MyTangram.js";
+import { MyUnitCube } from "./MyUnitCube.js";
+import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
 /**
  * MyScene
@@ -15,12 +13,12 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
     //Background color
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.gl.clearColor(1, 1, 1, 1);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -29,19 +27,12 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.parallelogram = new MyParallelogram(this);
-    this.triangleSmall = new MyTriangleSmall(this);
-    this.triangleBig = new MyTriangleBig(this);
+    this.tangram = new MyTangram(this);
+    this.unitCube = new MyUnitCube(this);
+    this.unitCubeQuad = new MyUnitCubeQuad(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayDiamond = true;
-    this.displayTriangle = false;
-    this.displayParallelogram = false;
-    this.displayTriangleSmall = false;
-    this.displayTriangleBig = false;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -55,8 +46,8 @@ export class MyScene extends CGFscene {
       0.4,
       0.1,
       500,
-      vec3.fromValues(15, 15, 15),
-      vec3.fromValues(0, 0, 0)
+      vec3.fromValues(0, 0, 30),
+      vec3.fromValues(0, 0, 0),
     );
   }
   setDefaultAppearance() {
@@ -81,39 +72,20 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    var sca = [
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-    ];
+    this.pushMatrix();
+    this.translate(0, 0, -4.01);
+    this.scale(8, 8, 8);
+    this.translate(0.5, -0.5, 0);
+    this.unitCubeQuad.display();
+    this.popMatrix();
 
-    this.multMatrix(sca);
-    //up202007972
+    this.pushMatrix();
+    this.translate(4, -4, 0)
+    this.tangram.display();
+    this.popMatrix();
 
-    // ---- BEGIN Primitive drawing section
-this.pushMatrix()
-this.translate(2,0,0)
-this.rotate(Math.PI/2,1,0,0)
-this.scale(2,2,2)
-    this.diamond.display();
-    if (this.displayTriangle) this.triangle.display();
-    if (this.displayParallelogram) this.parallelogram.display();
-    if (this.displayTriangleSmall) this.triangleSmall.display();
-    if (this.displayTriangleBig) this.triangleBig.display();
-
-    // ---- END Primitive drawing section
+    this.pushMatrix();
+    this.translate(0, 0, 4);
+    this.popMatrix();
   }
 }
