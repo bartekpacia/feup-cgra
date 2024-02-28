@@ -1,9 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyDiamond } from "./MyDiamond.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyParallelogram } from "./MyParallelogram.js";
-
-import { Square } from "./Square.js";
+import { MyTangram } from "./MyTangram.js";
 
 /**
  * MyScene
@@ -29,14 +25,11 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.parallelogram = new MyParallelogram(this);
-
-    this.square = new Square(this);
+    this.tangram = new MyTangram(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
+    this.scaleFactor = 1;
   }
   initLights() {
     this.lights[0].setPosition(15, 2, 5, 1);
@@ -75,90 +68,6 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    // SQUARE FOR TESTING
-    this.pushMatrix();
-    this.translate(0, 0, 0);
-    // this.square.display();
-    this.popMatrix();
-
-    // GREEN DIAMOND
-    const translationMatrix = [
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      2.5, 4, 0.1, 1,
-    ];
-
-    const s = 1.5;
-    const scaleMatrix = [
-      s, 0, 0, 0,
-      0, s, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
-    ];
-
-    this.pushMatrix();
-    this.multMatrix(translationMatrix);
-    this.multMatrix(scaleMatrix);
-    this.setDiffuse(0, 1, 0, 1);
-    this.diamond.display();
-    this.popMatrix();
-
-    // PINK TRIANGLE
-    this.pushMatrix();
-    this.scale(1.5, 1.5, 1);
-    this.translate(1, 1, 0);
-    this.rotate(Math.PI / 2, 0, 0, 1);
-    this.setDiffuse(1, 192/255, 204/255, 1);
-    this.triangle.display();
-    this.popMatrix();
-    
-    // BLUE TRIANGLE
-    this.pushMatrix();
-    this.scale(2, 2, 1);
-    this.translate(1, -1, 0);
-    this.rotate(Math.PI, 0, 0, 1);
-    this.setDiffuse(0, 0, 1, 1);
-    this.triangle.display();
-    this.popMatrix();
-
-    // ORANGE TRIANGLE
-    this.pushMatrix();
-    this.scale(2, 2, 1);
-    this.setDiffuse(1, 165 / 255, 0, 1);
-    this.triangle.display();
-    this.popMatrix();
-
-    // RED TRIANGLE
-    this.pushMatrix();
-    this.translate(-3, 1, 0.1);
-    this.rotate(Math.PI / 2, 0, 0, 1);
-    this.setDiffuse(1, 0, 0, 1);
-    this.triangle.display();
-    this.popMatrix();
-
-    // PURPLE TRIANGLE
-    this.pushMatrix();
-    this.translate(-0.5, -3, 0.1);
-    this.rotate(-Math.PI / 2, 0, 0, 1);
-    this.setDiffuse(0.5, 0, 0.5, 1);
-    this.triangle.display();
-    this.popMatrix();
-
-    // YELLOW PARALLELOGRAM
-    const reflectionMatrix = [
-       1,  0,  0,  0,
-       0, -1,  0,  0,
-       0,  0,  1,  0,
-       0,  0,  0,  1,
-    ];
-
-    this.pushMatrix();
-    this.translate(4, -0.5, 0);
-    this.multMatrix(reflectionMatrix);
-    this.rotate(-Math.PI / 6, 0, 0, 1);
-    this.setDiffuse(1, 1, 0, 1);
-    this.parallelogram.display();
-    this.popMatrix();
+    this.tangram.display();
   }
 }
