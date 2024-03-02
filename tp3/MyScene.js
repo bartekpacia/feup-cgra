@@ -3,22 +3,18 @@ import { MyPyramid } from "./MyPyramid.js";
 import { MyCone } from "./MyCone.js";
 import { MyPlane } from "./MyPlane.js";
 
-/**
-* MyScene
-* @constructor
-*/
 export class MyScene extends CGFscene {
     constructor() {
         super();
     }
+
     init(application) {
         super.init(application);
         this.initCameras();
         this.initLights();
         this.initMaterials();
-       
 
-        //Background color
+        // Background color
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
         this.gl.clearDepth(100.0);
@@ -26,7 +22,7 @@ export class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        //Initialize scene objects
+        // Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 5);
         this.cone = new MyCone(this, 3, 1);
@@ -38,7 +34,7 @@ export class MyScene extends CGFscene {
         // Labels and ID's for object selection on MyInterface
         this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2};
 
-        //Other variables connected to MyInterface
+        // Other variables connected to MyInterface
         this.selectedObject = 0;
         this.selectedMaterial = 0;
         this.displayAxis = true;
@@ -65,7 +61,11 @@ export class MyScene extends CGFscene {
         this.lights[1].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(10, 10, 10), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(
+            0.4, 0.1, 500,
+            vec3.fromValues(10, 10, 10),
+            vec3.fromValues(0, 0, 0),
+        );
     }
 
     hexToRgbA(hex)
@@ -142,40 +142,39 @@ export class MyScene extends CGFscene {
         this.materials = [this.material1, this.material2, this.material3, this.customMaterial];
 
         // Labels and ID's for object selection on MyInterface
-        this.materialIDs = {'Red Ambient': 0, 'Red Diffuse': 1, 'Red Specular': 2, 'Custom': 3 };
+        this.materialIDs = {
+            'Red Ambient': 0,
+            'Red Diffuse': 1,
+            'Red Specular': 2,
+            'Custom': 3,
+        };
     }
     display() {
-        // ---- BEGIN Background, camera and axis setup
-        // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
-        // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
         
         this.lights[0].update();
         this.lights[1].update();
 
-        // Draw axis
-        if (this.displayAxis)
+        if (this.displayAxis) {
             this.axis.display();
-
-        // ---- BEGIN Primitive drawing section
+        }
 
         this.materials[this.selectedMaterial].apply();
 
         this.pushMatrix();
         this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         
-        if (this.displayNormals)
+        if (this.displayNormals) {
             this.objects[this.selectedObject].enableNormalViz();
-        else
+        } else {
             this.objects[this.selectedObject].disableNormalViz();
+        }
         
         this.objects[this.selectedObject].display();
         this.popMatrix();
-        // ---- END Primitive drawing section
     }
 }
