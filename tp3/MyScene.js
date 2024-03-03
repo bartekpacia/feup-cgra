@@ -12,6 +12,7 @@ export class MyScene extends CGFscene {
 
     init(application) {
         super.init(application);
+
         this.initCameras();
         this.initLights();
         this.initMaterials();
@@ -30,22 +31,35 @@ export class MyScene extends CGFscene {
         this.cone = new MyCone(this, 3, 1);
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
+        this.unitCube = new MyUnitCube(this);
        
         
-        this.objects = [this.plane, this.pyramid, this.cone];
+        this.objects = [
+            this.plane,
+            this.pyramid,
+            this.cone,
+            this.tangram,
+            this.unitCube,
+        ];
 
-        // Labels and ID's for object selection on MyInterface
-        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2};
+        // Labels and IDs for object selection on MyInterface
+        this.objectIDs = {
+            'Plane': 0,
+            'Pyramid': 1,
+            'Cone': 2,
+            'Tangram': 3,
+            'UnitCube': 4,
+        };
 
         // Other variables connected to MyInterface
-        this.selectedObject = 0;
-        this.selectedMaterial = 0;
+        this.selectedObject = 4;
+        this.selectedMaterial = 1;
         this.displayAxis = true;
         this.displayNormals = false;
         this.objectComplexity = 0.5;
         this.scaleFactor = 2.0;
-
     }
+
     initLights() {
         this.setGlobalAmbientLight(0.3, 0.3, 0.3, 1.0);
 
@@ -59,10 +73,11 @@ export class MyScene extends CGFscene {
         this.lights[1].setPosition(0.0, -1.0, 2.0, 1.0);
         this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[1].setSpecular(1.0, 1.0, 0.0, 1.0);
-        this.lights[1].disable();
+        this.lights[1].enable();
         this.lights[1].setVisible(true);
         this.lights[1].update();
     }
+
     initCameras() {
         this.camera = new CGFcamera(
             0.4, 0.1, 500,
