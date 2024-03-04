@@ -6,21 +6,6 @@ export class MyUnitCube extends CGFobject {
 		this.initBuffers();
 	}
 
-    // /// Returns 4 vertices starting at start along plane
-    // makeSide(start, size, plane) {
-    //     side = [start];
-
-    //     for (let i = 0; i < 3; i++) {
-    //         newVertex = [
-    //             start[]
-    //         ];
-
-    //         side.push(...newVertex);
-    //     }
-
-    //     return side;
-    // }
-
 	initBuffers() {
 	    this.vertices = [
             // BOTTOM (0-3)
@@ -33,12 +18,22 @@ export class MyUnitCube extends CGFobject {
              0.5, -0.5, 0.5,
              0.5,  0.5, 0.5,
             -0.5,  0.5, 0.5,
-            // RIGHT (7-11)
+            // RIGHT (8-11)
              0.5, -0.5,  0.5,
              0.5, -0.5, -0.5,
              0.5,  0.5, -0.5,
              0.5,  0.5,  0.5,
-            // TOP (12-15)
+            // BACK (12-15)
+             0.5, -0.5, -0.5,
+            -0.5, -0.5, -0.5,
+            -0.5,  0.5, -0.5,
+             0.5,  0.5, -0.5,
+            // LEFT (16-19)
+            -0.5, -0.5, -0.5,
+            -0.5, -0.5,  0.5,
+            -0.5,  0.5,  0.5,
+            -0.5,  0.5, -0.5,
+            // TOP (20-23)
             -0.5,  0.5,  0.5,
              0.5,  0.5,  0.5,
              0.5,  0.5, -0.5,
@@ -57,24 +52,21 @@ export class MyUnitCube extends CGFobject {
             // RIGHT SIDE
             8, 9, 10,
             10, 11, 8,
+            
+            // BACK
+            12, 13, 14,
+            14, 15, 12,
 
-            // // RIGHT SIDE
-            // 1, 2, 6,
-            // 6, 5, 1,
+            // LEFT SIDE
+            16, 17, 18,
+            18, 19, 16,
 
-            // // BACK SIDE
-            // 2, 3, 7,
-            // 7, 6, 2,
-
-            // // LEFT SIDE
-            // 7, 3, 0,
-            // 0, 4, 7,
-
-            // // TOP
-            // 4, 5, 6,
-            // 6, 7, 4,
+            // TOP
+            20, 21, 22,
+            22, 23, 20,
 	    ];
 
+        
         this.normals = [
             // BOTTOM
              0, -1,  0,
@@ -91,7 +83,23 @@ export class MyUnitCube extends CGFobject {
              1,  0,  0,
              1,  0,  0,
              1,  0,  0,
+            // BACK
+             0,  0,  -1,
+             0,  0,  -1,
+             0,  0,  -1,
+             0,  0,  -1,
+            // LEFT
+            -1,  0,  0,
+            -1,  0,  0,
+            -1,  0,  0,
+            -1,  0,  0,
+            // TOP
+             0,  1,  0,
+             0,  1,  0,
+             0,  1,  0,
+             0,  1,  0,
         ];
+
 
 	    this.primitiveType = this.scene.gl.TRIANGLES;
 
