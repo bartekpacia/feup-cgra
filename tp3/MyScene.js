@@ -4,6 +4,7 @@ import { MyCone } from "./MyCone.js";
 import { MyPlane } from "./MyPlane.js";
 import { MyTangram } from "./MyTangram.js";
 import { MyUnitCube } from "./MyUnitCube.js";
+import { MyPrism } from "./MyPrism.js";
 
 export class MyScene extends CGFscene {
     constructor() {
@@ -22,7 +23,7 @@ export class MyScene extends CGFscene {
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
-        this.gl.enable(this.gl.CULL_FACE);
+        //this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
         // Initialize scene objects
@@ -32,6 +33,7 @@ export class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
+        this.prism = new MyPrism(this, 5, 1);
        
         
         this.objects = [
@@ -40,6 +42,7 @@ export class MyScene extends CGFscene {
             this.cone,
             this.tangram,
             this.unitCube,
+            this.prism,
         ];
 
         // Labels and IDs for object selection on MyInterface
@@ -49,10 +52,11 @@ export class MyScene extends CGFscene {
             'Cone': 2,
             'Tangram': 3,
             'UnitCube': 4,
+            'Prism': 5,
         };
 
         // Other variables connected to MyInterface
-        this.selectedObject = 4;
+        this.selectedObject = 5;
         this.selectedMaterial = 1;
         this.displayAxis = true;
         this.displayNormals = false;
