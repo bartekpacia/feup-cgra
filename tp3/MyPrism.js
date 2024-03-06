@@ -25,7 +25,7 @@ export class MyPrism extends CGFobject {
 				const vertex2 = [Math.cos((i * step) + 1), Math.sin((i * step) + 1), currentStackHeight + stackHeightDelta];
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 
-				this.vertices.push(...vertex0, ...vertex3, ...vertex1, ...vertex2);
+				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
 
 				//console.log(`vertex ${i}: ${vertex}`)
 				//this.vertices.push(...vertex);
@@ -35,13 +35,12 @@ export class MyPrism extends CGFobject {
 		}
 
 		let index = 0;
-        for (let i = 0; i < this.stacks; i++){
+        for (let i = 0; i < this.stacks; i++ ){
             for (let j = 0; j < this.slices; j++){
                 this.indices.push(index,j+2,j+3);
                 this.indices.push(index,j+3,j+1);
                 index += 4; 
             }
-           
         }
 
 		// this.normals = [
