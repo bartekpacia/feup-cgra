@@ -56,7 +56,7 @@ export class MyScene extends CGFscene {
         };
 
         // Other variables connected to MyInterface
-        this.selectedObject = 3;
+        this.selectedObject = 5;
         this.selectedMaterial = 0;
         this.displayAxis = true;
         this.displayNormals = true;

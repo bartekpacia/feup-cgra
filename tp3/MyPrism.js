@@ -14,34 +14,29 @@ export class MyPrism extends CGFobject {
 
         // draw prism bottom
         let alpha = 0;
-        const alphaIncrement = 2 * Math.PI / this.slices;
-        for (let i = 0; alpha < 2 * Math.PI; i+=3) {
-            const vertex = [Math.cos(alpha), Math.sin(alpha)];
-            this.vertices.push(...[vertex]);
-            this.indices.push(i);
-            alpha += alphaIncrement;
+        const step = 2 * Math.PI / this.slices;
+        for (let i = 0; i < this.slices; i++) {
+            const vertex = [Math.cos(alpha), Math.sin(alpha), 0];
+			console.log(`vertex ${i}: ${vertex}`)
+            this.vertices.push(...vertex);
+            alpha += step;
         }
 
-        console.log(`indices: ${this.indices}`)
+		this.indices = [
+			0, 1, 2,
+			0, 2, 3,
+			0, 3, 4,
+		];
 
-        // WHY NO WORK
+		this.normals = [
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+		];
 
-        // draw prism top
-
-		// this.vertices = [
-		// 	-0.5, -0.5, 0,
-		// 	 0.5, -0.5, 0,
-		// 	 0.5,  0.5, 0,
-		// 	-0.5,  0.5, 0,
-		// ];
-
-		// this.indices = [
-		// 	0, 1, 2,
-		// 	2, 3, 0,
-		// ];
-
-		this.primitiveType = this.scene.gl.LINE_LOOP;
-
+		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}
 }
