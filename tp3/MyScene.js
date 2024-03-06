@@ -23,7 +23,7 @@ export class MyScene extends CGFscene {
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
-        //this.gl.enable(this.gl.CULL_FACE);
+        this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
         // Initialize scene objects
@@ -56,10 +56,10 @@ export class MyScene extends CGFscene {
         };
 
         // Other variables connected to MyInterface
-        this.selectedObject = 5;
-        this.selectedMaterial = 1;
+        this.selectedObject = 3;
+        this.selectedMaterial = 0;
         this.displayAxis = true;
-        this.displayNormals = false;
+        this.displayNormals = true;
         this.objectComplexity = 0.5;
         this.scaleFactor = 2.0;
     }
@@ -85,7 +85,7 @@ export class MyScene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(
             0.4, 0.1, 500,
-            vec3.fromValues(10, 10, 10),
+            vec3.fromValues(25, 25, 25),
             vec3.fromValues(0, 0, 0),
         );
     }
@@ -150,7 +150,7 @@ export class MyScene extends CGFscene {
 
         // Similar to wood, with low specular component
         this.material4 = new CGFappearance(this);
-        this.material4.setAmbient(0, 0, 0, 0);
+        this.material4.setAmbient(0.45, 0.3, 0.1, 1.0);
         this.material4.setDiffuse(150 / 255, 111 / 255, 51 / 255, 1);
         this.material4.setSpecular(150 / 255, 111 / 255, 51 / 255, 1);
         this.material4.setShininess(10.0);

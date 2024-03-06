@@ -14,7 +14,7 @@ export class MyParallelogram extends CGFobject {
 			 1,  1,  0,	//3
 		];
 
-		//Counter-clockwise reference of vertices
+		// Counter-clockwise reference of vertices
 		this.indices = [
 			// frontview (CCW winding order)
 			3, 0, 1,
@@ -22,6 +22,19 @@ export class MyParallelogram extends CGFobject {
 			// backview (CW winding order)
 			1, 0, 3,
 			1, 3, 2,
+		];
+
+		this.normals = [
+			// frontview
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+			// backview
+			0, 0, -1,
+			0, 0, -1,
+			0, 0, -1,
+			0, 0, -1,
 		];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
