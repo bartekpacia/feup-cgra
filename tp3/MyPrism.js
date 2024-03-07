@@ -12,10 +12,7 @@ export class MyPrism extends CGFobject {
         this.vertices = [];
         this.indices = [];
 
-        // draw prism bottom
-
         const step = 2 * Math.PI / this.slices;
-		console.log(`step: ${360 / this.slices}°`)
 		let currentStackHeight = 0;
 
 		const stackHeightDelta = 1 / this.stacks;
@@ -27,71 +24,17 @@ export class MyPrism extends CGFobject {
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
-				console.log(`face ${i} vertices: ${vertex0}, ${vertex1}, ${vertex2}, ${vertex3}`);
 			}
 			currentStackHeight += stackHeightDelta;
 		}
-
-		// this is wrong (very wrong)
-		let index = 0;
-        for (let i = 0; i < this.stacks; i++ ){
-            for (let j = 0; j < this.slices; j++){
-                this.indices.push(index,j+2,j+3);
-                this.indices.push(index,j+3,j+1);
-                index += 4; 
-            }
-        }
 		
-		for (let i = 0; i < this.slices * 4; i+=4) {
-			this.indices.push(i, i+1, i+2);
-			this.indices.push(i+2, i+3, i);
+		for (let i = 0; i < this.stacks; i++) {
+			const offset = this.slices * 4 * i;
+			for (let j = 0; j < this.slices * 4; j+=4) {
+				this.indices.push(offset + j,   offset + j+1, offset + j+2);
+				this.indices.push(offset + j+2, offset + j+3, offset + j);
+			}
 		}
-
-		// // this is wrong (has gaps)
-		// this.indices = [
-		// 	// first side
-		// 	0, 1, 2,
-		// 	2, 3, 0,
-		// 	// second side
-		// 	4, 5, 6,
-		// 	6, 7, 4,
-		// 	// third side
-		// 	8, 9, 10,
-		// 	10, 11, 8,
-		// 	// fourth side
-		// 	12, 13, 14,
-		// 	14, 15, 12,
-		// 	// fifth side
-		// 	16, 17, 18,
-		// 	18, 19, 16,
-		// 	// sixth side
-		// 	20, 21, 22,
-		// 	22, 23, 20,
-		// ];
-
-		// this.indices = [
-		// 	// first side
-		// 	0, 1, 2,
-		// 	2, 3, 0,
-		// 	// second side	
-		// 	4, 5, 6,
-		// 	6, 7, 4,
-		// 	// third side
-		// 	8, 9, 10,
-		// 	10, 11, 8,
-			
-			
-		//     // //fourth side
-
-		// ];
-
-		// this.normals = [
-		// 	0, 0, 1,
-		// 	0, 0, 1,
-		// 	0, 0, 1,
-		// 	0, 0, 1,
-		// 	0, 0, 1,
-		// ];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
