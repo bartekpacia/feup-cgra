@@ -33,7 +33,7 @@ export class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
-        this.prism = new MyPrism(this, 6, 1);
+        this.prism = new MyPrism(this, 6, 2);
        
         
         this.objects = [
@@ -57,7 +57,7 @@ export class MyScene extends CGFscene {
 
         // Other variables connected to MyInterface
         this.selectedObject = 5;
-        this.selectedMaterial = 0;
+        this.selectedMaterial = 3;
         this.displayAxis = true;
         this.displayNormals = true;
         this.objectComplexity = 0.5;
@@ -85,7 +85,7 @@ export class MyScene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(
             0.4, 0.1, 500,
-            vec3.fromValues(10, 10, 10),
+            vec3.fromValues(13, 5, 16),
             vec3.fromValues(0, 0, 0),
         );
     }

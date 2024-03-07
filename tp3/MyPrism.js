@@ -1,4 +1,4 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject, CGFcamera } from '../lib/CGF.js';
 
 export class MyPrism extends CGFobject {
 	constructor(scene, slices, stacks) {
@@ -11,6 +11,7 @@ export class MyPrism extends CGFobject {
 	initBuffers() {
         this.vertices = [];
         this.indices = [];
+		this.normals = [];
 
         const step = 2 * Math.PI / this.slices;
 		let currentStackHeight = 0;
@@ -18,12 +19,23 @@ export class MyPrism extends CGFobject {
 		const stackHeightDelta = 1 / this.stacks;
 		while (currentStackHeight < 1) {
 			for (let i = 0; i < this.slices; i++) {
+				// Compute vertices
 				const vertex0 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight];
 				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
 				const vertex1 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight];
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
-
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
+
+				// Compute normals
+				let vector1 = vec3.create();
+				vec3.subtract(vector1, vec3.fromValues(...vertex1), vec3.fromValues(...vertex0));
+				let vector2 = vec3.create();
+				vec3.subtract(vector2, vec3.fromValues(...vertex2), vec3.fromValues(...vertex1));
+				let normalVector = vec3.create();
+				vec3.cross(normalVector, vector1, vector2);
+				for (let i = 0; i < 4; i++) {
+					this.normals.push(...[normalVector[0], normalVector[1], normalVector[2]]);
+				}
 			}
 			currentStackHeight += stackHeightDelta;
 		}
