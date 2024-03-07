@@ -33,7 +33,7 @@ export class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
-        this.prism = new MyPrism(this, 3, 1);
+        this.prism = new MyPrism(this, 6, 1);
        
         
         this.objects = [

@@ -22,8 +22,8 @@ export class MyPrism extends CGFobject {
 		while (currentStackHeight < 1) {
 			for (let i = 0; i < this.slices; i++) {
 				const vertex0 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight];
-				const vertex1 = [Math.cos((i * step) + 1), Math.sin((i * step) + 1), currentStackHeight];
-				const vertex2 = [Math.cos((i * step) + 1), Math.sin((i * step) + 1), currentStackHeight + stackHeightDelta];
+				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
+				const vertex1 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight];
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
@@ -41,41 +41,49 @@ export class MyPrism extends CGFobject {
                 index += 4; 
             }
         }
+		
+		for (let i = 0; i < this.slices * 4; i+=4) {
+			this.indices.push(i, i+1, i+2);
+			this.indices.push(i+2, i+3, i);
+		}
 
-		// this is wrong (has gaps)
-		this.indices = [
-			// first side
-			0, 1, 2,
-			2, 3, 0,
-			// second side
-			4, 5, 6,
-			6, 7, 4,
-			// third side
-			8, 9, 10,
-			10, 11, 8,
-			// fourth side
-			12, 13, 14,
-			14, 15, 12,
-			// fifth side
-			16, 17, 18,
-			18, 19, 16,
-		];
+		// // this is wrong (has gaps)
+		// this.indices = [
+		// 	// first side
+		// 	0, 1, 2,
+		// 	2, 3, 0,
+		// 	// second side
+		// 	4, 5, 6,
+		// 	6, 7, 4,
+		// 	// third side
+		// 	8, 9, 10,
+		// 	10, 11, 8,
+		// 	// fourth side
+		// 	12, 13, 14,
+		// 	14, 15, 12,
+		// 	// fifth side
+		// 	16, 17, 18,
+		// 	18, 19, 16,
+		// 	// sixth side
+		// 	20, 21, 22,
+		// 	22, 23, 20,
+		// ];
 
-		this.indices = [
-			// first side
-			0, 1, 2,
-			2, 3, 0,
-			// second side	
-			4, 5, 6,
-			6, 7, 4,
-			// third side
-			8, 9, 10,
-			10, 11, 8,
+		// this.indices = [
+		// 	// first side
+		// 	0, 1, 2,
+		// 	2, 3, 0,
+		// 	// second side	
+		// 	4, 5, 6,
+		// 	6, 7, 4,
+		// 	// third side
+		// 	8, 9, 10,
+		// 	10, 11, 8,
 			
 			
-		    // //fourth side
+		//     // //fourth side
 
-		];
+		// ];
 
 		// this.normals = [
 		// 	0, 0, 1,
