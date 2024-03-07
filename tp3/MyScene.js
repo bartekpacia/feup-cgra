@@ -23,7 +23,7 @@ export class MyScene extends CGFscene {
 
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
-        this.gl.enable(this.gl.CULL_FACE);
+        // this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
         // Initialize scene objects
@@ -33,7 +33,7 @@ export class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
-        this.prism = new MyPrism(this, 5, 4);
+        this.prism = new MyPrism(this, 3, 1);
        
         
         this.objects = [
@@ -85,7 +85,7 @@ export class MyScene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(
             0.4, 0.1, 500,
-            vec3.fromValues(25, 25, 25),
+            vec3.fromValues(10, 10, 10),
             vec3.fromValues(0, 0, 0),
         );
     }

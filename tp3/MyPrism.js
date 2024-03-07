@@ -13,8 +13,9 @@ export class MyPrism extends CGFobject {
         this.indices = [];
 
         // draw prism bottom
-        let alpha = 0;
+
         const step = 2 * Math.PI / this.slices;
+		console.log(`step: ${360 / this.slices}°`)
 		let currentStackHeight = 0;
 
 		const stackHeightDelta = 1 / this.stacks;
@@ -26,14 +27,12 @@ export class MyPrism extends CGFobject {
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
-
-				//console.log(`vertex ${i}: ${vertex}`)
-				//this.vertices.push(...vertex);
-				alpha += step;
+				console.log(`face ${i} vertices: ${vertex0}, ${vertex1}, ${vertex2}, ${vertex3}`);
 			}
 			currentStackHeight += stackHeightDelta;
 		}
 
+		// this is wrong (very wrong)
 		let index = 0;
         for (let i = 0; i < this.stacks; i++ ){
             for (let j = 0; j < this.slices; j++){
@@ -42,6 +41,41 @@ export class MyPrism extends CGFobject {
                 index += 4; 
             }
         }
+
+		// this is wrong (has gaps)
+		this.indices = [
+			// first side
+			0, 1, 2,
+			2, 3, 0,
+			// second side
+			4, 5, 6,
+			6, 7, 4,
+			// third side
+			8, 9, 10,
+			10, 11, 8,
+			// fourth side
+			12, 13, 14,
+			14, 15, 12,
+			// fifth side
+			16, 17, 18,
+			18, 19, 16,
+		];
+
+		this.indices = [
+			// first side
+			0, 1, 2,
+			2, 3, 0,
+			// second side	
+			4, 5, 6,
+			6, 7, 4,
+			// third side
+			8, 9, 10,
+			10, 11, 8,
+			
+			
+		    // //fourth side
+
+		];
 
 		// this.normals = [
 		// 	0, 0, 1,
