@@ -19,10 +19,10 @@ export class MyPrism extends CGFobject {
 		const stackHeightDelta = 1 / this.stacks;
 		while (currentStackHeight < 1) {
 			for (let i = 0; i < this.slices; i++) {
-				// Compute vertices
+				// Compute vertices in counter-clockwise order, starting in bottom-right.
 				const vertex0 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight];
-				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
 				const vertex1 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight];
+				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
 
