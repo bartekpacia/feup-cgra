@@ -19,22 +19,26 @@ export class MyPrism extends CGFobject {
 		const stackHeightDelta = 1 / this.stacks;
 		while (currentStackHeight < 1) {
 			for (let i = 0; i < this.slices; i++) {
-				// Compute vertices
+				// Compute vertices in counter-clockwise order, starting in bottom-right.
 				const vertex0 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight];
-				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
 				const vertex1 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight];
+				const vertex2 = [Math.cos((i + 1) * step), Math.sin((i + 1) * step), currentStackHeight + stackHeightDelta];
 				const vertex3 = [Math.cos(i * step), Math.sin(i * step), currentStackHeight + stackHeightDelta];
 				this.vertices.push(...vertex0, ...vertex1, ...vertex2, ...vertex3);
 
-				// Compute normals
+				// Compute not-normalized normal
 				let vector1 = vec3.create();
 				vec3.subtract(vector1, vec3.fromValues(...vertex1), vec3.fromValues(...vertex0));
 				let vector2 = vec3.create();
 				vec3.subtract(vector2, vec3.fromValues(...vertex2), vec3.fromValues(...vertex1));
 				let normalVector = vec3.create();
 				vec3.cross(normalVector, vector1, vector2);
+
+				// Normalize normal
+				let realNormalVector = vec3.create();
+				vec3.normalize(realNormalVector, normalVector);
 				for (let i = 0; i < 4; i++) {
-					this.normals.push(...[normalVector[0], normalVector[1], normalVector[2]]);
+					this.normals.push(...[realNormalVector[0], realNormalVector[1], realNormalVector[2]]);
 				}
 			}
 			currentStackHeight += stackHeightDelta;
