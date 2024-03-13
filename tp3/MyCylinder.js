@@ -11,20 +11,20 @@ export class MyCylinder extends CGFobject {
 	initBuffers() {
         this.vertices = [];
         this.indices = [];
-		// this.normals = [];
+		this.normals = [];
 
         const step = 2 * Math.PI / this.slices; // ɑ, the degrees increment
-		let currentStackHeight = 0;
 		const stackHeightDelta = 1 / this.stacks;
 		for (let i = 0; i < this.stacks + 1; i++) {
 			for (let j = 0; j < this.slices; j++) {
 				const vertex = [Math.cos(j * step), Math.sin(j * step), stackHeightDelta * i];
 				this.vertices.push(...vertex);
-			}
 
-			currentStackHeight += stackHeightDelta;
+				const normal = [Math.cos(j * step), Math.sin(j * step), 0];
+				this.normals.push(...normal);
+			}
 		}
-		
+
 		for (let i = 0; i < this.stacks; i++) {
             // Offset from indices of vertices in the first stack
 			const offset = this.slices * i;
