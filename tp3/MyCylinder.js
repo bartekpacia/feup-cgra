@@ -14,7 +14,6 @@ export class MyCylinder extends CGFobject {
 		this.normals = [];
 
         const step = 2 * Math.PI / this.slices; // ɑ, the degrees increment
-		let angle = 0;
 		let currentStackHeight = 0;
 		const stackHeightDelta = 1 / this.stacks;
 		for (let i = 0; i < this.stacks + 1; i++) {
@@ -22,10 +21,8 @@ export class MyCylinder extends CGFobject {
 				const vertex = [Math.cos(j * step), Math.sin(j * step), stackHeightDelta * i];
 				this.vertices.push(...vertex);
 
-				const normal = [Math.cos(angle), Math.sin(angle), 0];
+				const normal = [Math.cos(j * step), Math.sin(j * step), 0];
 				this.normals.push(...normal);
-
-				angle += step;
 			}
 			currentStackHeight += stackHeightDelta;
 		}
