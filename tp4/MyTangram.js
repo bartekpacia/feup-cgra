@@ -49,6 +49,14 @@ export class MyTangram extends CGFobject {
         this.yellowParallelogramMaterial.setAmbient(1, 1, 0, 1);
         this.yellowParallelogramMaterial.setDiffuse(1, 1, 0, 1);
         this.yellowParallelogramMaterial.setSpecular(1, 1, 1, 1);
+
+        this.cutoutDiamondMaterial = new CGFappearance(this.scene);
+        this.cutoutDiamondMaterial.setAmbient(0.1, 0.1, 0.1, 1);
+        this.cutoutDiamondMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.cutoutDiamondMaterial.setSpecular(0.1, 0.1, 0.1, 1);
+        this.cutoutDiamondMaterial.setShininess(10.0);
+        this.cutoutDiamondMaterial.loadTexture('images/tangram.png');
+        this.cutoutDiamondMaterial.setTextureWrap('REPEAT', 'REPEAT');
     }
 
     display() {
@@ -71,7 +79,7 @@ export class MyTangram extends CGFobject {
         this.scene.pushMatrix();
         this.scene.multMatrix(translationMatrix);
         this.scene.multMatrix(scaleMatrix);
-        this.greenDiamondMaterial.apply();
+        this.cutoutDiamondMaterial.apply();
         this.diamond.display();
         this.scene.popMatrix();
 
