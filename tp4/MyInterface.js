@@ -8,7 +8,7 @@ export class MyInterface extends CGFinterface {
 
     init(application) {
         super.init(application);
-        this.gui = new dat.GUI();
+        this.gui = new dat.GUI({width: 250});
         
         const obj = this;
 
@@ -16,6 +16,8 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
 
         this.gui.add(this.scene, 'displayQuad').name('Display Quad');
+        this.gui.add(this.scene, 'displayUnitCube').name('Display Unit Cube');
+        this.gui.add(this.scene, 'displayTangram').name('Display Tangram');
 
         // Dropdown for textures
         this.gui.add(this.scene, 'selectedTexture', this.scene.textureIds).name('Selected Texture').onChange(this.scene.updateAppliedTexture.bind(this.scene));
