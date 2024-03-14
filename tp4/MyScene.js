@@ -44,6 +44,7 @@ export class MyScene extends CGFscene {
 
         //-------Objects connected to MyInterface
         this.displayAxis = true;
+        this.displayQuad = true;
         this.scaleFactor = 5;
         this.selectedTexture = 1;
         this.wrapS = 0;
@@ -106,8 +107,9 @@ export class MyScene extends CGFscene {
         this.applyViewMatrix();
 
         // Draw axis
-        if (this.displayAxis)
+        if (this.displayAxis) {
             this.axis.display();
+        }
 
         this.setDefaultAppearance();
 
@@ -123,7 +125,9 @@ export class MyScene extends CGFscene {
         
         // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        this.quad.display();
+        if (this.displayQuad) {
+           this.quad.display();
+        }
 
         // ---- END Primitive drawing section
     }
