@@ -1,10 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyQuad } from "./MyQuad.js";
+import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
-/**
- * MyScene
- * @constructor
- */
 export class MyScene extends CGFscene {
     constructor() {
         super();
@@ -27,6 +24,7 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
+        this.unitCube = new MyUnitCubeQuad(this, []);
 
         //------ Applied Material
         this.quadMaterial = new CGFappearance(this);
@@ -47,7 +45,7 @@ export class MyScene extends CGFscene {
         //-------Objects connected to MyInterface
         this.displayAxis = true;
         this.scaleFactor = 5;
-        this.selectedTexture = -1;        
+        this.selectedTexture = 1;
         this.wrapS = 0;
         this.wrapT = 0;
 
@@ -59,6 +57,7 @@ export class MyScene extends CGFscene {
         this.wrappingS = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
         this.wrappingT = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
 
+        this.updateAppliedTexture();
       }
 
     initLights() {
