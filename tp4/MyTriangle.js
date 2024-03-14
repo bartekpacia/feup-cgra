@@ -1,8 +1,9 @@
 import { CGFobject } from '../lib/CGF.js';
 
 export class MyTriangle extends CGFobject {
-	constructor(scene) {
+	constructor(scene, texCoords) {
 		super(scene);
+		this.texCoords = texCoords;
 		this.initBuffers();
 	}
 	

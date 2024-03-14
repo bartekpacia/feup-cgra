@@ -1,8 +1,9 @@
 import { CGFobject } from '../lib/CGF.js';
 
 export class MyParallelogram extends CGFobject {
-	constructor(scene) {
+	constructor(scene, texCoords) {
 		super(scene);
+		this.texCoords = texCoords;
 		this.initBuffers();
 	}
 
@@ -17,9 +18,9 @@ export class MyParallelogram extends CGFobject {
 		// Counter-clockwise reference of vertices
 		this.indices = [
 			// frontview (CCW winding order)
-			3, 0, 1,
-			2, 3, 1,
-			// backview (CW winding order)
+			// 3, 0, 1,
+			// 2, 3, 1,
+			// backview (CW winding order) - we don't want it in TP4
 			1, 0, 3,
 			1, 3, 2,
 		];
@@ -30,11 +31,11 @@ export class MyParallelogram extends CGFobject {
 			0, 0, 1,
 			0, 0, 1,
 			0, 0, 1,
-			// backview
-			0, 0, -1,
-			0, 0, -1,
-			0, 0, -1,
-			0, 0, -1,
+			// backview - we don't want it in TP4
+			// 0, 0, -1,
+			// 0, 0, -1,
+			// 0, 0, -1,
+			// 0, 0, -1,
 		];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
