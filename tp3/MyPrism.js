@@ -43,7 +43,7 @@ export class MyPrism extends CGFobject {
 			}
 			currentStackHeight += stackHeightDelta;
 		}
-		
+
 		for (let i = 0; i < this.stacks; i++) {
 			const offset = this.slices * 4 * i;
 			for (let j = 0; j < this.slices * 4; j+=4) {
@@ -56,4 +56,3 @@ export class MyPrism extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-

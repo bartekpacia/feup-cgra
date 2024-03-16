@@ -103,7 +103,7 @@ export class MyScene extends CGFscene {
     }
 
     display() {
-  
+
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -127,10 +127,10 @@ export class MyScene extends CGFscene {
 
         this.quadMaterial.apply();
 
-        // Default texture filtering in WebCGF is LINEAR. 
-        // Uncomment next line for NEAREST when magnifying, or 
+        // Default texture filtering in WebCGF is LINEAR.
+        // Uncomment next line for NEAREST when magnifying, or
         // add a checkbox in the GUI to alternate in real time
-        
+
         // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
         if (this.displayQuad) {

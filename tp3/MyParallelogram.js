@@ -42,4 +42,3 @@ export class MyParallelogram extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-

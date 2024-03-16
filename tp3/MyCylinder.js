@@ -38,7 +38,7 @@ export class MyCylinder extends CGFobject {
                 if ((j + 1) % this.slices == 0) {
                     triangle1[0] -= this.slices;
                     triangle1[1] -= this.slices;
-                    triangle1[2] -= this.slices; 
+                    triangle1[2] -= this.slices;
                 }
                 this.indices.push(...triangle1);
 			}
@@ -48,4 +48,3 @@ export class MyCylinder extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-

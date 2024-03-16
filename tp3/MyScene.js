@@ -36,8 +36,8 @@ export class MyScene extends CGFscene {
         this.unitCube = new MyUnitCube(this);
         this.prism = new MyPrism(this, 8, 20);
         this.cylinder = new MyCylinder(this, 6, 20);
-       
-        
+
+
         this.objects = [
             this.plane,
             this.pyramid,
@@ -195,7 +195,7 @@ export class MyScene extends CGFscene {
         this.updateProjectionMatrix();
         this.loadIdentity();
         this.applyViewMatrix();
-        
+
         this.lights[0].update();
         this.lights[1].update();
 
@@ -207,13 +207,13 @@ export class MyScene extends CGFscene {
 
         this.pushMatrix();
         this.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
-        
+
         if (this.displayNormals) {
             this.objects[this.selectedObject].enableNormalViz();
         } else {
             this.objects[this.selectedObject].disableNormalViz();
         }
-        
+
         this.objects[this.selectedObject].display();
         this.popMatrix();
     }

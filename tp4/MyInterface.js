@@ -9,8 +9,6 @@ export class MyInterface extends CGFinterface {
     init(application) {
         super.init(application);
         this.gui = new dat.GUI({width: 250});
-        
-        const obj = this;
 
         // Checkbox element in GUI
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');

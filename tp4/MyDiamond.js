@@ -10,7 +10,7 @@ export class MyDiamond extends CGFobject {
 		this.vertices = [
 			-1,  0,  0,
 			 0, -1,  0,
-			 1,  0,  0, 
+			 1,  0,  0,
 			 0,  1,  0,
 		];
 
