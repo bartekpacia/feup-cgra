@@ -5,7 +5,7 @@ export class MyTriangle extends CGFobject {
 		super(scene);
 		this.initBuffers();
 	}
-	
+
 	initBuffers() {
 		this.vertices = [
 			-1,  1, 0,	//0
@@ -28,4 +28,3 @@ export class MyTriangle extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-

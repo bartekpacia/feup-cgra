@@ -52,7 +52,7 @@ export class MyUnitCube extends CGFobject {
             // RIGHT SIDE
             8, 9, 10,
             10, 11, 8,
-            
+
             // BACK
             12, 13, 14,
             14, 15, 12,
@@ -66,7 +66,7 @@ export class MyUnitCube extends CGFobject {
             22, 23, 20,
 	    ];
 
-        
+
         this.normals = [
             // BOTTOM
              0, -1,  0,

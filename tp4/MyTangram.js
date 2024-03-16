@@ -22,7 +22,7 @@ export class MyTangram extends CGFobject {
                                                           1,   1,]);
 
         this.redTriangle = new MyTriangle(this.scene, [0.5,  0.5,
-                                                       0.25, 0.75, 
+                                                       0.25, 0.75,
                                                        0.75, 0.75]);
 
         this.purpleTriangle = new MyTriangle(this.scene, [0,    0,
