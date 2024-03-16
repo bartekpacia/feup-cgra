@@ -37,41 +37,6 @@ export class MyTangram extends CGFobject {
 	}
 
     initMaterials() {
-        this.greenDiamondMaterial = new CGFappearance(this.scene);
-        this.greenDiamondMaterial.setAmbient(0, 0.25, 0, 1);
-        this.greenDiamondMaterial.setDiffuse(0, 0.25, 0, 1);
-        this.greenDiamondMaterial.setSpecular(1, 1, 1, 1);
-
-        this.pinkTriangleMaterial = new CGFappearance(this.scene);
-        this.pinkTriangleMaterial.setAmbient(1, 192/255, 204/255, 1);
-        this.pinkTriangleMaterial.setDiffuse(1, 192/255, 204/255, 1);
-        this.pinkTriangleMaterial.setSpecular(1, 1, 1, 1);
-
-        this.blueTriangleMaterial = new CGFappearance(this.scene);
-        this.blueTriangleMaterial.setAmbient(0, 0, 1, 1);
-        this.blueTriangleMaterial.setDiffuse(0, 0, 1, 1);
-        this.blueTriangleMaterial.setSpecular(1, 1, 1, 1);
-
-        this.orangeTriangleMaterial = new CGFappearance(this.scene);
-        this.orangeTriangleMaterial.setAmbient(1, 165 / 255, 0, 1);
-        this.orangeTriangleMaterial.setDiffuse(1, 165 / 255, 0, 1);
-        this.orangeTriangleMaterial.setSpecular(1, 1, 1, 1);
-
-        this.redTriangleMaterial = new CGFappearance(this.scene);
-        this.redTriangleMaterial.setAmbient(1, 0, 0, 1);
-        this.redTriangleMaterial.setDiffuse(1, 0, 0, 1);
-        this.redTriangleMaterial.setSpecular(1, 1, 1, 1);
-
-        this.purpleTriangleMaterial = new CGFappearance(this.scene);
-        this.purpleTriangleMaterial.setAmbient(0.5, 0, 0.5, 1);
-        this.purpleTriangleMaterial.setDiffuse(0.5, 0, 0.5, 1);
-        this.purpleTriangleMaterial.setSpecular(1, 1, 1, 1);
-
-        this.yellowParallelogramMaterial = new CGFappearance(this.scene);
-        this.yellowParallelogramMaterial.setAmbient(1, 1, 0, 1);
-        this.yellowParallelogramMaterial.setDiffuse(1, 1, 0, 1);
-        this.yellowParallelogramMaterial.setSpecular(1, 1, 1, 1);
-
         this.cutoutTangramMaterial = new CGFappearance(this.scene);
         this.cutoutTangramMaterial.setAmbient(0.1, 0.1, 0.1, 1);
         this.cutoutTangramMaterial.setDiffuse(0.9, 0.9, 0.9, 1);

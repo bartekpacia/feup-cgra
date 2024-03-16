@@ -25,7 +25,11 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
-        this.unitCube = new MyUnitCubeQuad(this, []);
+        this.unitCube = new MyUnitCubeQuad(this, {
+            'top': 'images/mineTop.png',
+            'side': 'images/mineSide.png',
+            'bottom': 'images/mineBottom.png',
+        });
         this.tangram = new MyTangram(this);
 
         //------ Applied Material
@@ -45,10 +49,11 @@ export class MyScene extends CGFscene {
         //-------
 
         //-------Objects connected to MyInterface
+        this.enableNearestFiltering = true;
         this.displayAxis = true;
         this.displayQuad = false;
-        this.displayUnitCube = false;
-        this.displayTangram = true;
+        this.displayUnitCube = true;
+        this.displayTangram = false;
         this.scaleFactor = 5;
         this.selectedTexture = 1;
         this.wrapS = 0;
@@ -75,7 +80,7 @@ export class MyScene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(
             0.4, 0.1, 500,
-            vec3.fromValues(100, 100, 100),
+            vec3.fromValues(15, 15, 15),
             vec3.fromValues(0, 0, 0),
         );
     }
@@ -125,13 +130,17 @@ export class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        this.quadMaterial.apply();
+        // this.quadMaterial.apply();
 
         // Default texture filtering in WebCGF is LINEAR.
         // Uncomment next line for NEAREST when magnifying, or
         // add a checkbox in the GUI to alternate in real time
 
-        // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        if (this.enableNearestFiltering) {
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        } else {
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        }
 
         if (this.displayQuad) {
            this.quad.display();
