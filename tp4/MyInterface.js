@@ -10,9 +10,8 @@ export class MyInterface extends CGFinterface {
         super.init(application);
         this.gui = new dat.GUI({width: 250});
 
-        // Checkbox element in GUI
+        this.gui.add(this.scene, 'enableNearestFiltering').name('NearestFilter');
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
-
         this.gui.add(this.scene, 'displayQuad').name('Display Quad');
         this.gui.add(this.scene, 'displayUnitCube').name('Display Unit Cube');
         this.gui.add(this.scene, 'displayTangram').name('Display Tangram');
