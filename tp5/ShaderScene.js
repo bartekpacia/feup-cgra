@@ -71,11 +71,11 @@ export class ShaderScene extends CGFscene {
 		this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
 		this.appearance.setShininess(120);
 
-		this.texture = new CGFtexture(this, "textures/texture.jpg");
+		this.texture = new CGFtexture(this, "textures/waterTex.jpg");
 		this.appearance.setTexture(this.texture);
 		this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
-		this.texture2 = new CGFtexture(this, "textures/FEUP.jpg");
+		this.texture2 = new CGFtexture(this, "textures/waterMap.jpg");
 
 		// shaders initialization
 
@@ -88,7 +88,9 @@ export class ShaderScene extends CGFscene {
 			new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"), // Multiple textures (VS, FS)
 			new CGFshader(this.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag"), // Animation
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/sepia.frag"), // Sepia
-			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag") // Convolution
+			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag"), // Convolution
+			new CGFshader(this.gl, "shaders/vertexShader.vert", "shaders/fragmentShader.frag"), // Position Shading
+			new CGFshader(this.gl, "shaders/water.vert", "shaders/water.frag")// Plane shaders
 		];
 
 		// additional texture will have to be bound to texture unit 1 later, when using the shader, with "this.texture2.bind(1);"
@@ -109,7 +111,10 @@ export class ShaderScene extends CGFscene {
 			'Multiple textures in VS and FS': 5,
 			'Animation example': 6,
 			'Sepia': 7,
-			'Convolution': 8
+			'Convolution': 8,
+			'Position Shading': 9,
+			'Plane Shading':10
+
 		};
 
 		// shader code panels references
@@ -122,12 +127,12 @@ export class ShaderScene extends CGFscene {
 		this.onShaderCodeVizChanged(this.showShaderCode);
 		this.onSelectedShaderChanged(this.selectedExampleShader);
 
-
 		// set the scene update period
 		// (to invoke the update() method every 50ms or as close as possible to that )
 		this.setUpdatePeriod(50);
 
 	};
+
 
 	// configure cameras
 	initCameras() {
@@ -160,15 +165,25 @@ export class ShaderScene extends CGFscene {
 	// Called when selected shader changes
 	onSelectedShaderChanged(v) {
 		// update shader code
-		this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.testShaders[v].vertexURL) + "</xmp>";
-		this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.testShaders[v].fragmentURL) + "</xmp>";
-
+		if (v === 10) { // Water shader
+            this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl("shaders/water.vert") + "</xmp>";
+            this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl("shaders/water.frag") + "</xmp>";
+        } else {
+            this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.testShaders[v].vertexURL) + "</xmp>";
+            this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl(this.testShaders[v].fragmentURL) + "</xmp>";
+        }
 		// update scale factor
 		this.onScaleFactorChanged(this.scaleFactor);
 	}
 
 	// called when a new object is selected
 	onSelectedObjectChanged(v) {
+		super.onSelectedObjectChanged(v);
+
+		if (v == 1) {
+			this.objects[v].setFillMode();
+			
+		}
 		// update wireframe mode when the object changes
 		this.onWireframeChanged(this.wireframe);
 	}
@@ -184,7 +199,7 @@ export class ShaderScene extends CGFscene {
 
 	// called when the scale factor changes on the interface
 	onScaleFactorChanged(v) {
-		this.testShaders[this.selectedExampleShader].setUniformsValues({ normScale: this.scaleFactor });
+		this.testShaders[6].setUniformsValues({scaleFactor: this.scaleFactor });
 	}
 
 	// called periodically (as per setUpdatePeriod() in init())
