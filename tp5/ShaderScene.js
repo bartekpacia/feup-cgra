@@ -23,11 +23,12 @@ export class ShaderScene extends CGFscene {
 		super();
 		this.texture = null;
 		this.appearance = null;
+		this.texture2 = null;
 
 		// initial configuration of interface
 		this.selectedObject = 0;
 		this.wireframe = false;
-		this.selectedExampleShader = 0;
+		this.selectedExampleShader = 10;
 		this.showShaderCode = false;
 
 		this.scaleFactor = 16.0;
@@ -36,6 +37,8 @@ export class ShaderScene extends CGFscene {
 	init(application) {
 		// main initialization
 		super.init(application);
+		
+		this.currentTime = 0;
 
 		this.initCameras();
 
@@ -75,6 +78,9 @@ export class ShaderScene extends CGFscene {
 		this.appearance.setTexture(this.texture);
 		this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
+		//Bind texture to texture unit 0
+		this.texture.bind(0);
+
 		this.texture2 = new CGFtexture(this, "textures/waterMap.jpg");
 
 		// shaders initialization
@@ -98,6 +104,9 @@ export class ShaderScene extends CGFscene {
 		this.testShaders[5].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ timeFactor: 0 });
+		this.testShaders[0].setUniformsValues({ uSampler2: 1});
+		this.testShaders[10].setUniformsValues({uSampler2: 1});
+		this.testShaders[10].setUniformsValues({uSampler: 0});
 
 
 		// Shaders interface variables
@@ -165,7 +174,7 @@ export class ShaderScene extends CGFscene {
 	// Called when selected shader changes
 	onSelectedShaderChanged(v) {
 		// update shader code
-		if (v === 10) { // Water shader
+		if (v == 10) { // Water shader
             this.vShaderDiv.innerHTML = "<xmp>" + getStringFromUrl("shaders/water.vert") + "</xmp>";
             this.fShaderDiv.innerHTML = "<xmp>" + getStringFromUrl("shaders/water.frag") + "</xmp>";
         } else {
@@ -204,14 +213,28 @@ export class ShaderScene extends CGFscene {
 
 	// called periodically (as per setUpdatePeriod() in init())
 	update(t) {
-		// only shader 6 is using time factor
-		if (this.selectedExampleShader == 6)
-			// Dividing the time by 100 "slows down" the variation (i.e. in 100 ms timeFactor increases 1 unit).
+		// Call the parent class update method
+		super.update(t);
+	
+		// Increment the time factor for shader 6 animation
+		if (this.selectedExampleShader == 6) {
+			// Dividing the time by 100 "slows down" the variation
 			// Doing the modulus (%) by 100 makes the timeFactor loop between 0 and 99
-			// ( so the loop period of timeFactor is 100 times 100 ms = 10s ; the actual animation loop depends on how timeFactor is used in the shader )
+			// The loop period of timeFactor is 100 times 100 ms = 10s
+			// The actual animation loop depends on how timeFactor is used in the shader
 			this.testShaders[6].setUniformsValues({ timeFactor: t / 100 % 100 });
+		}
+	
+		// Increment the time factor for water animation
+		if (this.selectedExampleShader == 10) {
+			// Increment the time factor for water animation
+			this.currentTime += t / 1000; // Convert milliseconds to seconds
+	
+			// Pass the updated time factor to the water shader
+			this.testShaders[10].setUniformsValues({ time: this.currentTime });
+		}
 	}
-
+	
 	// main display function
 	display() {
 		// Clear image and depth buffer every time we update the scene
@@ -226,7 +249,7 @@ export class ShaderScene extends CGFscene {
 		// Apply transformations corresponding to the camera position relative to the origin
 		this.applyViewMatrix();
 
-		// Update all lights used
+		// Update all lights usedA
 		this.lights[0].update();
 
 		// Draw axis
@@ -242,8 +265,8 @@ export class ShaderScene extends CGFscene {
 		// bind additional texture to texture unit 1
 		this.texture2.bind(1);
 
-		if (this.selectedObject==0) {
-			// teapot (scaled and rotated to conform to our axis)
+		if (this.selectedObject == 0) {
+			// plane (scaled and rotated to conform to our axis)
 
 			this.pushMatrix();
 

@@ -67,7 +67,7 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    this.setDefaultAppearance();
+    this.setDefaultAppearance();                
 
     this.pushMatrix();
     this.translate(0, 0, -4.01);
