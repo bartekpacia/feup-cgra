@@ -17,11 +17,8 @@ void main() {
     float displacement = texture2D(heightMap, aTextureCoord).r; // Assuming red channel is used for displacement
     
     // vary texture coordinates over time for animation
-    vec2 animatedTexCoord  = aTextureCoord + vec2(0.0, sin(time) * 0.05); 
+    vec2 animatedTexCoord  = aTextureCoord + vec2(cos(time) * 0.05, 0.0); 
     
-
-    vertexPos.y += displacement;
-
     gl_Position = uPMatrix * uMVMatrix * vertexPos;
     vTextureCoord = animatedTexCoord;
 }
