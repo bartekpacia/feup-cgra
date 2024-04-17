@@ -1,81 +1,54 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MySphere extends CGFobject {
-  constructor(scene, slices, stacks) {
-    super(scene);
-    this.slices = slices;
-    this.stacks = stacks;
-    this.initBuffers();
-  }
-
-  initBuffers() {
-    this.vertices = [];
-    this.indices = [];
-    this.normals = [];
-
-    const verticalAngle = (Math.PI / 2) / this.stacks; // ɑ, the degrees increment (90° / stacks)
-    const horizontalAngle = (Math.PI * 2) / this.slices; // 360° / slices
-
-    // Generate lines of latitude ("parallels") in the northern hemisphere
-    for (let i = 0; i < this.stacks; i++) {
-      const y = Math.sin(j * verticalAngle);
-
-      for (let j = 0; j < this.slices; j++) {
-        const x = Math.cos(j * verticalAngle);
-        const z = Math.cos();
-        const vertex = [x, y, z];
-        this.vertices.push(vertex);
-      }
+    constructor(scene, slices, stacks) {
+        super(scene);
+        this.slices = slices;
+        this.stacks = stacks;
+        this.initBuffers();
     }
 
-    // Generate lines of latitude ("parallels") in the southern hemisphere
-    for (let i = 0; i < this.stacks; i++) {
+    initBuffers() {
+        this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+        this.texCoords = [];
 
-    }
+        // Calculate the vertical angle increment
+        const delta_alpha = Math.PI / this.stacks;
 
-    const stackHeightDelta = 1 / this.stacks;
-    for (let i = 0; i < this.stacks + 1; i++) {
-      for (let j = 0; j < this.slices; j++) {
-        const vertex = [
-          Math.cos(j * verticalAngle), // x
-          Math.sin(j * verticalAngle), // y
-          stackHeightDelta * i, // z
-        ];
-        this.vertices.push(...vertex);
+        // Generate vertices and normals
+        for (let i = 0; i <= this.stacks; i++) {
+            const stack_angle = i * delta_alpha;
+            const v = 1 - (i / this.stacks);
 
-        const normal = [Math.cos(j * verticalAngle), Math.sin(j * verticalAngle), 0];
-        this.normals.push(...normal);
-      }
-    }
+            for (let j = 0; j <= this.slices; j++) {
+                const slice_angle = j * 2 * Math.PI / this.slices;
+                const u = 1 - (j / this.slices);
 
-    for (let i = 0; i < this.stacks; i++) {
-      // Offset from indices of vertices in the first stack
-      const offset = this.slices * i;
-      for (let j = 0; j < this.slices; j++) {
-        const triangle0 = [
-          offset + j,
-          offset + j + 1,
-          offset + j + this.slices,
-        ];
-        this.indices.push(...triangle0);
-        let triangle1 = [
-          offset + j + 1,
-          offset + j + this.slices + 1,
-          offset + j + this.slices,
-        ];
-        console.log(`face ${i * offset + j}: ${triangle0} and ${triangle1}`);
+                const x = Math.sin(stack_angle) * Math.cos(slice_angle);
+                const y = Math.sin(stack_angle) * Math.sin(slice_angle);
+                const z = Math.cos(stack_angle);
 
-        // Prevent off-by-one error
-        if ((j + 1) % this.slices == 0) {
-          triangle1[0] -= this.slices;
-          triangle1[1] -= this.slices;
-          triangle1[2] -= this.slices;
+                this.vertices.push(x, y, z);
+                this.normals.push(x, y, z);
+                this.texCoords.push(u, v);
+            }
         }
-        this.indices.push(...triangle1);
-      }
-    }
 
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
-  }
+        // Generate indices to form triangles
+        for (let i = 0; i < this.stacks; i++) {
+            for (let j = 0; j < this.slices; j++) {
+                const vertex1 = i * (this.slices + 1) + j;
+                const vertex2 = vertex1 + this.slices + 1;
+
+                // Form triangles for the current and next stack
+                this.indices.push(vertex1, vertex2, vertex1 + 1);
+                this.indices.push(vertex2, vertex2 + 1, vertex1 + 1);
+            }
+        }
+
+        this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
+    }
 }
