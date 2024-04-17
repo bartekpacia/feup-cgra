@@ -6,6 +6,8 @@ import {
   CGFtexture,
 } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
+import { MySphere } from "./MySphere.js";
+import { MyUnitCube } from "./MyUnitCube.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -29,6 +31,8 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
+    this.cube = new MyUnitCube(this);
+    this.sphere = new MySphere(this, 16, 8);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -89,6 +93,23 @@ export class MyScene extends CGFscene {
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
     this.popMatrix();
+
+    this.pushMatrix();
+    const s = 1;
+    this.scale(s, s, s);
+    this.cube.display();
+    this.popMatrix();
+
+    for (let i = 0; i < this.sphere.vertices; i++) {
+      const vertex = this.sphere.vertices[i];
+      
+      this.pushMatrix();
+      this.scale(0.1, 0.1, 0.1);
+      console.log(`vertex: ${vertex}`);
+      this.cube.translate(...vertex);
+      this.cube.display();
+      this.popMatrix();
+    }
 
     // ---- END Primitive drawing section
   }
