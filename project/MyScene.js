@@ -6,6 +6,7 @@ import {
   CGFtexture,
 } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
+import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 
 
@@ -33,6 +34,7 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
     this.mySphere = new MySphere(this, 20, 30);
+    this.myRock = new MyRock(this, 20, 20);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -67,7 +69,7 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(5, 5, 5),
+      vec3.fromValues(6, 6, 5),
       vec3.fromValues(0, 0, 0),
     );
   }
@@ -109,6 +111,17 @@ export class MyScene extends CGFscene {
     this.translate(0, 0, 0);
     this.mySphere.display();
     this.popMatrix();
+
+    this.pushMatrix();
+    //this.appearance.apply();
+    this.translate(3, 0, 3);
+    this.myRock.display();
+    this.popMatrix();
+
+
+            
+
+
 
 
 
