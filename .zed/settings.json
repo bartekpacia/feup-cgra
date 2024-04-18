@@ -2,7 +2,7 @@
   "language_overrides": {
     "JavaScript": {
       "format_on_save": "off",
-      "tab_size": 4
+      "tab_size": 2
     }
   }
 }
