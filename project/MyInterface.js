@@ -1,7 +1,6 @@
 import { CGFinterface, dat } from "../lib/CGF.js";
 import { MyScene } from "./MyScene.js";
 
-
 export class MyInterface extends CGFinterface {
   constructor() {
     super();
@@ -17,7 +16,6 @@ export class MyInterface extends CGFinterface {
 
     //Checkbox element in GUI
     this.gui.add(this.scene, "displayAxis").name("Display Axis");
-  
 
     //Slider element in GUI
     this.gui.add(this.scene, "scaleFactor", 0.1, 5).name("Scale Factor");

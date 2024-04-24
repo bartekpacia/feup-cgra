@@ -8,7 +8,7 @@ import {
 import { MyPlane } from "./MyPlane.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
-import { MyFlower } from "./MyFlower.js";
+import { MyGarden } from "./MyGarden.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -41,15 +41,12 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap("REPEAT", "REPEAT");
 
-    this.flowerAppearance = new CGFappearance(this);
-    this.flowerAppearance.setAmbient(0.1, 0.1, 0.1, 1);
-
     // Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
     this.mySphere = new MySphere(this, 20, 30);
     this.myRock = new MyRock(this, 20, 20);
-    this.myFlower = new MyFlower(this, 3);
+    this.myGarden = new MyGarden(this, 3, 2);
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -117,10 +114,13 @@ export class MyScene extends CGFscene {
     this.mySphere.display();
     this.popMatrix();
 
-    this.pushMatrix();
-    this.translate(0, 2, 0);
-    this.myFlower.display();
-    this.popMatrix();
+    // Display garden
+    {
+      this.pushMatrix();
+      this.translate(-13, 0, -10);
+      this.myGarden.display();
+      this.popMatrix();
+    }
 
     this.pushMatrix();
     //this.appearance.apply();
