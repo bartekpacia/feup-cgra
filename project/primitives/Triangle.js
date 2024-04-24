@@ -1,18 +1,18 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject } from '../../lib/CGF.js';
 
-export class MyTriangle extends CGFobject {
-	constructor(scene, height, texCoords) {
+export class Triangle extends CGFobject {
+	constructor(scene, length, heightDiff) {
 		super(scene);
-		this.height = height;
-		this.texCoords = texCoords;
+		this.length = length;
+		this.heightDiff = heightDiff;
 		this.initBuffers();
 	}
 
 	initBuffers() {
 		this.vertices = [
 			 0,  0, 0,
-			-1,  0, this.height,
-			 1,  0, this.height,
+			-1,  this.heightDiff, this.length,
+			 1,  this.heightDiff, this.length,
 		];
 
 		this.indices = [
@@ -20,6 +20,7 @@ export class MyTriangle extends CGFobject {
 			2, 1, 0,
 		];
 
+		// TODO(bartek): Fix normals to reflect vertices position
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,

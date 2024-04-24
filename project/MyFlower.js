@@ -1,6 +1,6 @@
 import { CGFobject, CGFappearance } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
-import { MyTriangle } from "./MyTriangle.js";
+import { Triangle } from "./primitives/Triangle.js";
 import { MyCylinder } from "./MyCylinder.js";
 
 /**
@@ -8,7 +8,7 @@ import { MyCylinder } from "./MyCylinder.js";
 */
 export class MyFlower extends CGFobject {
 
-    constructor(scene, petalCount) {
+    constructor(scene, petalCount = 3) {
         super(scene);
         this.initBuffers();
 
@@ -16,10 +16,10 @@ export class MyFlower extends CGFobject {
         this.petalCount = petalCount;
 
         this.sphere = new MySphere(scene, 16, 8);
-        const halePartsCount = 5;
-        this.haleParts = [];
-        for (let i = 0; i < halePartsCount; i++) {
-            this.haleParts.push(new MyCylinder(scene, 20, 20));
+        const stemPartsCount = 5;
+        this.stemParts = [];
+        for (let i = 0; i < stemPartsCount; i++) {
+            this.stemParts.push(new MyCylinder(scene, 20, 20));
         }
 
         this.petals = [];
@@ -52,9 +52,9 @@ export class MyFlower extends CGFobject {
             this.scene.popMatrix();
         }
 
-        for (let i = 0; i < this.haleParts.length; i++) {
+        for (let i = 0; i < this.stemParts.length; i++) {
             const y = 0 - (i * 1.1);
-            const halePart = this.haleParts[i];
+            const halePart = this.stemParts[i];
             this.scene.pushMatrix();
             this.scene.translate(0, y, 0);
             this.scene.scale(0.3, 1, 0.3);
@@ -73,15 +73,15 @@ export class MyFlower extends CGFobject {
  * A petal is two triangles joined together.
  */
 class Petal extends CGFobject {
-    constructor(scene) {
+    constructor(scene, peakHeight = 3) {
         super(scene);
         this.initBuffers();
 
         this.scene = scene;
         this.angle = (Math.PI / 2) / 10; // 9°
 
-        this.firstTriangle = new MyTriangle(scene, 3);
-        this.secondTriangle = new MyTriangle(scene, 3);
+        this.firstTriangle = new Triangle(scene, 3, peakHeight);
+        this.secondTriangle = new Triangle(scene, 3, peakHeight);
     }
 
     display() {
@@ -91,7 +91,7 @@ class Petal extends CGFobject {
 
         // Closer to center
         this.scene.pushMatrix();
-        this.scene.rotate(-this.angle, 1, 0, 0);
+        // this.scene.rotate(-this.angle, 1, 0, 0);
         this.firstTriangle.display();
         this.scene.popMatrix();
 
@@ -99,7 +99,7 @@ class Petal extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(0, 0, 6);
         this.scene.scale(1, 1, -1);
-        this.scene.rotate(-this.angle, 1, 0, 0);
+        // this.scene.rotate(-this.angle, 1, 0, 0);
         this.secondTriangle.display();
         this.scene.popMatrix();
 
