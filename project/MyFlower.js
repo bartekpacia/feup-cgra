@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import { CGFobject, CGFappearance } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
 import { MyTriangle } from "./MyTriangle.js";
 import { MyCylinder } from "./MyCylinder.js";
@@ -44,6 +44,8 @@ export class MyFlower extends CGFobject {
             const increment = (Math.PI * 2) / this.petalCount;
             const rotation = increment * i;
             this.scene.pushMatrix();
+            this.scene.setAmbient(1, 192/255, 204/255, 1);
+            this.scene.setDiffuse(1, 192/255, 204/255, 1);
             //this.scene.translate(1 + 0.5, 0, 1 + 0.5);
             this.scene.rotate(rotation, 0, 1, 0);
             triangle.display();
@@ -95,9 +97,9 @@ class Petal extends CGFobject {
 
         // Farther from center
         this.scene.pushMatrix();
+        this.scene.translate(0, 0, 6);
         this.scene.scale(1, 1, -1);
-        this.scene.rotate(this.angle, 1, 0, 0);
-        // this.scene.translate(0, 0, 3);
+        this.scene.rotate(-this.angle, 1, 0, 0);
         this.secondTriangle.display();
         this.scene.popMatrix();
 

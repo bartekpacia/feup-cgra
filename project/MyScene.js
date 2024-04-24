@@ -63,6 +63,11 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+
+    this.lights[1].setPosition(-2, -2, 4);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
   }
 
   initCameras() {
@@ -101,19 +106,19 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.planeAppearance.apply();
     this.translate(0, -100, 0);
-    this.scale(400,400,400);
+    this.scale(400, 400, 400);
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
     this.popMatrix();
 
     this.pushMatrix();
     this.sphereAppearance.apply();
-    this.translate(0, 0, 0);
+    this.translate(0, 0, 5);
     this.mySphere.display();
     this.popMatrix();
 
     this.pushMatrix();
-    this.translate(3, 0, -3);
+    this.translate(0, 2, 0);
     this.myFlower.display();
     this.popMatrix();
 
