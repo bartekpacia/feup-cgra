@@ -1,7 +1,7 @@
 import { CGFobject } from "../lib/CGF.js";
 import { Triangle } from "./primitives/Triangle.js";
 import { MyCylinder } from "./MyCylinder.js";
-import { getRandom } from "./common.js";
+import { getRandom, crossProduct } from "./common.js";
 
 /**
  * Flower consists of stem, center (aka stamen) and petals.
@@ -129,17 +129,23 @@ class Receptacle extends CGFobject {
     this.indices = [];
     this.normals = [];
 
+    const centerPoint = [0, 0.5, 0];
+
     const delta = (Math.PI * 2) / this.sideCount;
     for (let i = 0; i < this.sideCount; i++) {
       const angle = delta * i;
 
-      const point0 = [0, 0.5, 0];
       const point1 = [Math.cos(angle + delta), 0, Math.sin(angle + delta)];
       const point2 = [Math.cos(angle),         0, Math.sin(angle)];
 
-      this.vertices.push(...point0, ...point1, ...point2);
+      this.vertices.push(...centerPoint, ...point1, ...point2);
       this.indices.push(i * 3, i * 3 + 1, i * 3 + 2);
-      this.normals.push(...[1, 1, 1], ...[1, 1, 1], ...[1, 1, 1]);
+
+      const normal = crossProduct(centerPoint, point1, point2);
+      // console.log(`normal: ${normal}`);
+
+      this.normals.push(...normal, ...normal, ...normal);
+      // this.normals.push(...[1, 1, 1], ...[1, 1, 1], ...[1, 1, 1]);
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
