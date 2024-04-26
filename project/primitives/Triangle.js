@@ -1,7 +1,7 @@
 import { CGFobject } from "../../lib/CGF.js";
 
 export class Triangle extends CGFobject {
-  constructor(scene, length, heightDiff) {
+  constructor(scene, length = 3, heightDiff = 0) {
     super(scene);
     this.length = length;
     this.heightDiff = heightDiff;

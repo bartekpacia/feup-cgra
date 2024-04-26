@@ -1,11 +1,11 @@
 import { CGFobject, CGFappearance } from "../lib/CGF.js";
 import { MyFlower } from "./MyFlower.js";
 import { getRandomInt } from "./common.js";
+import { Triangle } from "./primitives/Triangle.js";
 
 export class MyGarden extends CGFobject {
-  constructor(scene, xLength, zLength, space = 7.5) {
+  constructor(scene, xLength, zLength, space = 8) {
     super(scene);
-    this.initBuffers();
 
     this.xLenght = xLength;
     this.zLength = zLength;
@@ -15,16 +15,29 @@ export class MyGarden extends CGFobject {
     for (let i = 0; i < xLength; i++) {
       for (let j = 0; j < zLength; j++) {
         const petalCount = getRandomInt(3, 6);
-
-        this.flowers.push(new MyFlower(scene, petalCount));
+        const stemPartsCount = getRandomInt(3, 6);
+        this.flowers.push(new MyFlower(scene, petalCount, stemPartsCount));
       }
     }
+
+    this.triangle = new Triangle(scene);
+
+    this.initBuffers();
   }
 
-  display() {
+  initBuffers() {
+    super.initBuffers();
+
     this.vertices = [];
     this.indices = [];
     this.normals = [];
+
+    this.primitiveType = this.scene.gl.TRIANGLES;
+    this.initGLBuffers();
+  }
+
+  display() {
+    this.triangle.display();
 
     for (let i = 0; i < this.xLenght; i++) {
       for (let j = 0; j < this.zLength; j++) {
@@ -34,8 +47,19 @@ export class MyGarden extends CGFobject {
         this.scene.popMatrix();
       }
     }
+  }
 
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
+  enableNormalViz() {
+    super.enableNormalViz();
+    for (let i = 0; i < this.flowers.length; i++) {
+      this.flowers[i].enableNormalViz();
+    }
+  }
+
+  disableNormalViz() {
+    super.disableNormalViz();
+    for (let i = 0; i < this.flowers.length; i++) {
+      this.flowers[i].disableNormalViz();
+    }
   }
 }

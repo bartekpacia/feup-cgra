@@ -9,6 +9,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
+import { MyFlower } from "./MyFlower.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -47,9 +48,11 @@ export class MyScene extends CGFscene {
     this.mySphere = new MySphere(this, 20, 30);
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
+    this.myFlower = new MyFlower(this, 5, 5);
 
     // Objects connected to MyInterface
     this.displayAxis = true;
+    this.displayNormals = true;
     this.scaleFactor = 1;
 
     this.enableTextures(true);
@@ -73,7 +76,7 @@ export class MyScene extends CGFscene {
       0.1,
       1000,
       vec3.fromValues(6, 6, 5),
-      vec3.fromValues(0, 0, 0),
+      vec3.fromValues(0, 0, 0)
     );
   }
 
@@ -114,13 +117,21 @@ export class MyScene extends CGFscene {
     this.mySphere.display();
     this.popMatrix();
 
+    this.pushMatrix();
+    this.translate(10, 0, 10);
+    this.myFlower.display();
+    this.popMatrix();
+
     // Display garden
-    {
-      this.pushMatrix();
-      this.translate(-13, 0, -10);
-      this.myGarden.display();
-      this.popMatrix();
+    this.pushMatrix();
+    this.translate(-13, 0, -10);
+    this.myGarden.display();
+    if (this.displayNormals) {
+      this.myGarden.enableNormalViz();
+    } else {
+      this.myGarden.disableNormalViz();
     }
+    this.popMatrix();
 
     this.pushMatrix();
     //this.appearance.apply();
