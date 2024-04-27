@@ -60,7 +60,7 @@ export class MyScene extends CGFscene {
 
     // Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayNormals = true;
+    this.displayNormals = false;
     this.scaleFactor = 1;
 
     this.enableTextures(true);
@@ -172,7 +172,7 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     this.pushMatrix();
-    //this.appearance.apply();
+    // this.appearance.apply();
     this.translate(3, 0, 3);
     this.myRock.display();
     this.popMatrix();

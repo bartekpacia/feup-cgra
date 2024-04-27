@@ -45,7 +45,7 @@ export class MyPanorama extends CGFobject {
     // Generate additional inverted normals
     const invertedNormals = [];
     for (let i = 0; i < this.normals.length; i++) {
-      // invertedNormals.push(-this.normals[i]);
+      invertedNormals.push(-this.normals[i]);
     }
     this.normals = this.normals.concat(invertedNormals);
 
