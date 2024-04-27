@@ -8,8 +8,8 @@ import {
 import { MyPlane } from "./MyPlane.js";
 import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
-
-
+import { MyGarden } from "./MyGarden.js";
+import { MyFlower } from "./MyFlower.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -22,7 +22,7 @@ export class MyScene extends CGFscene {
     this.initCameras();
     this.initLights();
 
-    //Background color
+    // Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
@@ -30,23 +30,10 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-    //Initialize scene objects
-    this.axis = new CGFaxis(this);
-    this.plane = new MyPlane(this, 30);
-    this.mySphere = new MySphere(this, 20, 30);
-    this.myRock = new MyRock(this, 20, 20);
-
-    //Objects connected to MyInterface
-    this.displayAxis = true;
-    this.scaleFactor = 1;
-
-    this.enableTextures(true);
-
-    //Initializing the textures
+    // Initializing the appearances
     this.planeTexture = new CGFtexture(this, "images/grass_texture.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
 
-    // Initializing the appearances
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
     this.planeAppearance.setTextureWrap("REPEAT", "REPEAT");
@@ -55,6 +42,20 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+    // Initialize scene objects
+    this.axis = new CGFaxis(this);
+    this.plane = new MyPlane(this, 30);
+    this.mySphere = new MySphere(this, 20, 30);
+    this.myRock = new MyRock(this, 20, 20);
+    this.myGarden = new MyGarden(this, 3, 2);
+    this.myFlower = new MyFlower(this, 5, 5);
+
+    // Objects connected to MyInterface
+    this.displayAxis = true;
+    this.displayNormals = true;
+    this.scaleFactor = 1;
+
+    this.enableTextures(true);
   }
 
   initLights() {
@@ -62,6 +63,11 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+
+    this.lights[1].setPosition(-2, -2, 4);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
   }
 
   initCameras() {
@@ -70,7 +76,7 @@ export class MyScene extends CGFscene {
       0.1,
       1000,
       vec3.fromValues(6, 6, 5),
-      vec3.fromValues(0, 0, 0),
+      vec3.fromValues(0, 0, 0)
     );
   }
 
@@ -100,16 +106,31 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.planeAppearance.apply();
     this.translate(0, -100, 0);
-    this.scale(400,400,400);
+    this.scale(400, 400, 400);
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
     this.popMatrix();
 
-
     this.pushMatrix();
     this.sphereAppearance.apply();
-    this.translate(0, 0, 0);
+    this.translate(0, 0, 5);
     this.mySphere.display();
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.translate(10, 0, 10);
+    this.myFlower.display();
+    this.popMatrix();
+
+    // Display garden
+    this.pushMatrix();
+    this.translate(-13, 0, -10);
+    this.myGarden.display();
+    if (this.displayNormals) {
+      this.myGarden.enableNormalViz();
+    } else {
+      this.myGarden.disableNormalViz();
+    }
     this.popMatrix();
 
     this.pushMatrix();
@@ -117,13 +138,6 @@ export class MyScene extends CGFscene {
     this.translate(3, 0, 3);
     this.myRock.display();
     this.popMatrix();
-
-
-            
-
-
-
-
 
     // ---- END Primitive drawing section
   }
