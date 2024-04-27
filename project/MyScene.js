@@ -10,6 +10,7 @@ import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
+import { MyPanorama } from "./MyPanorama.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -33,6 +34,7 @@ export class MyScene extends CGFscene {
     // Initializing the appearances
     this.planeTexture = new CGFtexture(this, "images/grass_texture.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
+    this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
 
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
@@ -42,9 +44,15 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+    this.panoramaAppearance = new CGFappearance(this);
+    // this.panoramaAppearance.setAmbient(1.0, 1.0, 1.0, 1.0);
+    this.panoramaAppearance.setTexture(this.panoramaTexture);
+    this.panoramaAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+
     // Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
+    this.myPanorama = new MyPanorama(this, 200, 4, 4);
     this.mySphere = new MySphere(this, 20, 30);
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
@@ -61,13 +69,25 @@ export class MyScene extends CGFscene {
   initLights() {
     this.lights[0].setPosition(5, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[0].setLinearAttenuation(0.0);
+    this.lights[0].setConstantAttenuation(0.0);
     this.lights[0].enable();
     this.lights[0].update();
 
     this.lights[1].setPosition(-2, -2, 4);
     this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].setLinearAttenuation(0.0);
+    this.lights[1].setConstantAttenuation(0.0);
     this.lights[1].enable();
     this.lights[1].update();
+
+    this.lights[2].setPosition(0, 0, 0);
+    this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[2].setSpecular(1.0, 1.0, 1.0, 1.0);
+    this.lights[2].setLinearAttenuation(0.0);
+    this.lights[2].setConstantAttenuation(0.0);
+    this.lights[2].enable();
+    this.lights[2].update();
   }
 
   initCameras() {
@@ -75,7 +95,8 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(6, 6, 5),
+      //vec3.fromValues(200, 200, 200),
+       vec3.fromValues(6, 6, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -104,12 +125,24 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
+    this.panoramaAppearance.apply();
+    this.rotate(Math.PI / 2, 1, 0, 0);
+    if (this.displayNormals) {
+      this.myPanorama.enableNormalViz();
+    } else {
+      this.myPanorama.disableNormalViz();
+    }
+    this.myPanorama.display();
+    this.popMatrix();
+
+    this.pushMatrix();
     this.planeAppearance.apply();
     this.translate(0, -100, 0);
     this.scale(400, 400, 400);
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
     this.popMatrix();
+  
 
     this.pushMatrix();
     this.sphereAppearance.apply();
