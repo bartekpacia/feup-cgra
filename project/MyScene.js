@@ -126,6 +126,11 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.panoramaAppearance.apply();
+    this.translate(
+      this.camera.position[0],
+      this.camera.position[1],
+      this.camera.position[2]
+    );
     this.rotate(Math.PI / 2, 1, 0, 0);
     if (this.displayNormals) {
       this.myPanorama.enableNormalViz();
