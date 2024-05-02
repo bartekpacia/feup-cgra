@@ -59,6 +59,12 @@ export class MyScene extends CGFscene {
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
     this.bee = new MyUnitCube(this);
+    this.cameraFocusBee = false;
+
+    // State variables
+    this.previousCameraPosition = vec4.fromValues(0, 0, 0, 0);
+    this.didUpdateCameraPos = true;
+    this.beeCoords = { x: 0, y: 0, z: 0 };
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -107,21 +113,51 @@ export class MyScene extends CGFscene {
   }
 
   checkKeys() {
-    let text = "Keys pressed: ";
+    let text = "";
     let keysPressed = false;
 
     // Check for key codes e.g. in https://keycode.info
     if (this.gui.isKeyPressed("KeyW")) {
-      text += " W ";
+      text += "W";
       keysPressed = true;
     }
-
+    if (this.gui.isKeyPressed("KeyA")) {
+      text += "A";
+      keysPressed = true;
+    }
     if (this.gui.isKeyPressed("KeyS")) {
-      text += " S ";
+      text += "S";
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      text += "D";
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("ArrowUp")) {
+      text += "^";
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("ArrowDown")) {
+      text += "v";
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("Space")) {
+      text += " ";
       keysPressed = true;
     }
 
-    if (keysPressed) console.log(text);
+    if (keysPressed) console.log(`GUI text: "${text}"`);
+
+    if (text.includes("W")) this.beeCoords.z -= 0.1;
+    if (text.includes("A")) this.beeCoords.x -= 0.1;
+    if (text.includes("S")) this.beeCoords.z += 0.1;
+    if (text.includes("D")) this.beeCoords.x += 0.1;
+    if (text.includes("^")) this.beeCoords.y += 0.1;
+    if (text.includes("v")) this.beeCoords.y -= 0.1;
+    if (text.includes(" ")) {
+      this.didUpdateCameraPos = false;
+      this.cameraFocusBee = !this.cameraFocusBee;
+    }
   }
 
   display() {
@@ -142,7 +178,31 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
+    if (this.cameraFocusBee) {
+      if (!this.didUpdateCameraPos) {
+        this.previousCameraPosition = this.camera.position;
+        return;
+      }
+      console.log("focus on bee, previousCameraPosition: ", this.previousCameraPosition);
+      this.didUpdateCameraPos = true;
+      this.camera.setPosition(
+        this.beeCoords.x + 5,
+        this.beeCoords.y + 5,
+        this.beeCoords.z + 5
+      );
+    } else {
+      if (this.didUpdateCameraPos) return;
+
+      const ppos = this.previousCameraPosition;
+      console.log("focus on center, previousCameraPosition: ", ppos);
+      this.camera.setPosition(ppos[0], ppos[1], ppos[2]);
+      this.didUpdateCameraPos = true;
+    }
+
+    this.pushMatrix();
+    this.translate(this.beeCoords.x, this.beeCoords.y, this.beeCoords.z);
     this.bee.display();
+    this.popMatrix();
 
     this.pushMatrix();
     this.panoramaAppearance.apply();

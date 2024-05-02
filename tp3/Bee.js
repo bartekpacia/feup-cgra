@@ -1,6 +1,7 @@
 import { CGFobject } from '../lib/CGF.js';
 
-export class MyUnitCube extends CGFobject {
+// This is MyUnitCube .
+export class Bee extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.initBuffers();
@@ -102,7 +103,6 @@ export class MyUnitCube extends CGFobject {
 
 
 	    this.primitiveType = this.scene.gl.TRIANGLES;
-
 	    this.initGLBuffers();
 	}
 }
