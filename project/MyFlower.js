@@ -195,9 +195,9 @@ class Petal extends CGFobject {
     this.scene.setDiffuse(0, 0, 0, 0);
     this.scene.setSpecular(1, 1, 1, 1);
     this.scene.setShininess(10);
-    // this.scene.setAmbient(this.color[0], this.color[1], this.color[2], 1.0);
-    // this.scene.setDiffuse(this.color[0], this.color[1], this.color[2], 1.0);
-    // this.scene.setSpecular(0.1, 0.1, 0.1, 1.0);
+    this.scene.setAmbient(this.color[0], this.color[1], this.color[2], 1.0);
+    this.scene.setDiffuse(this.color[0], this.color[1], this.color[2], 1.0);
+    this.scene.setSpecular(0.1, 0.1, 0.1, 1.0);
 
     // The triangle closer to center
     this.scene.pushMatrix();

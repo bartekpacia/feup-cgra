@@ -46,9 +46,9 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTextureWrap("REPEAT", "REPEAT");
 
     this.panoramaAppearance = new CGFappearance(this);
-    // this.panoramaAppearance.setAmbient(1.0, 1.0, 1.0, 1.0);
     this.panoramaAppearance.setTexture(this.panoramaTexture);
     this.panoramaAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+    this.panoramaAppearance.setEmission(1, 1, 1, 1);
 
     // Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -71,8 +71,6 @@ export class MyScene extends CGFscene {
   initLights() {
     this.lights[0].setPosition(5, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-    this.lights[0].setLinearAttenuation(0.0);
-    this.lights[0].setConstantAttenuation(0.0);
     this.lights[0].enable();
     this.lights[0].update();
 
@@ -86,8 +84,6 @@ export class MyScene extends CGFscene {
     this.lights[2].setPosition(0, 0, 0);
     this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[2].setSpecular(1.0, 1.0, 1.0, 1.0);
-    this.lights[2].setLinearAttenuation(0.0);
-    this.lights[2].setConstantAttenuation(0.0);
     this.lights[2].enable();
     this.lights[2].update();
   }
