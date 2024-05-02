@@ -11,6 +11,7 @@ import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyUnitCube } from "./MyUnitCube.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -57,6 +58,7 @@ export class MyScene extends CGFscene {
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
+    this.bee = new MyUnitCube(this);
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -96,7 +98,7 @@ export class MyScene extends CGFscene {
       0.1,
       1000,
       //vec3.fromValues(200, 200, 200),
-       vec3.fromValues(6, 6, 5),
+      vec3.fromValues(6, 6, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -106,6 +108,24 @@ export class MyScene extends CGFscene {
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
+  }
+
+  checkKeys() {
+    let text = "Keys pressed: ";
+    let keysPressed = false;
+
+    // Check for key codes e.g. in https://keycode.info
+    if (this.gui.isKeyPressed("KeyW")) {
+      text += " W ";
+      keysPressed = true;
+    }
+
+    if (this.gui.isKeyPressed("KeyS")) {
+      text += " S ";
+      keysPressed = true;
+    }
+
+    if (keysPressed) console.log(text);
   }
 
   display() {
@@ -119,10 +139,14 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    this.checkKeys();
+
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
+
+    this.bee.display();
 
     this.pushMatrix();
     this.panoramaAppearance.apply();
@@ -147,7 +171,6 @@ export class MyScene extends CGFscene {
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
     this.popMatrix();
-  
 
     this.pushMatrix();
     this.sphereAppearance.apply();
