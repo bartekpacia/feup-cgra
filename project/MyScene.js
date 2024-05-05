@@ -12,7 +12,9 @@ import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyUnitCube } from "./MyUnitCube.js";
-import { splatVec3 } from "./common.js"
+import { splatVec3 } from "./common.js";
+
+const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -68,6 +70,7 @@ export class MyScene extends CGFscene {
     this.previousCameraTarget = vec3.create();
     this.didUpdateCamera = true;
     this.cameraToggleReady = true;
+    this.newCameraPosition = vec3.create();
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -103,8 +106,8 @@ export class MyScene extends CGFscene {
       0.1,
       1000,
       //vec3.fromValues(200, 200, 200),
-      vec3.fromValues(6, 6, 5), /* position */
-      vec3.fromValues(0, 0, 0), /* target */
+      vec3.fromValues(6, 6, 5) /* position */,
+      vec3.fromValues(0, 0, 0) /* target */
     );
   }
 
@@ -153,15 +156,15 @@ export class MyScene extends CGFscene {
     let y = 0;
     let z = 0;
     // if (keysPressed) console.log(`GUI text: "${text}"`);
-    if (text.includes("W")) z -= 0.1;
-    if (text.includes("A")) x -= 0.1;
-    if (text.includes("S")) z += 0.1;
-    if (text.includes("D")) x += 0.1;
-    if (text.includes("^")) y += 0.1;
-    if (text.includes("v")) y -= 0.1;
+    if (text.includes("W")) z -= 1;
+    if (text.includes("A")) x -= 1;
+    if (text.includes("S")) z += 1;
+    if (text.includes("D")) x += 1;
+    if (text.includes("^")) y += 1;
+    if (text.includes("v")) y -= 1;
 
     const translationVec = vec3.fromValues(x, y, z);
-    vec3.add(this.beePosition, this.beePosition, translationVec)
+    vec3.add(this.beePosition, this.beePosition, translationVec);
 
     if (text.includes(" ")) {
       // Enforce 0.5 second cooldown
@@ -169,7 +172,7 @@ export class MyScene extends CGFscene {
         this.didUpdateCamera = false;
         this.cameraFocusBee = !this.cameraFocusBee;
         this.cameraToggleReady = false;
-        setTimeout(() => this.cameraToggleReady = true, 500);
+        setTimeout(() => (this.cameraToggleReady = true), 500);
       }
     }
   }
@@ -192,55 +195,28 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
-    const x = this.camera.position[0];
-    const y = this.camera.position[1];
-    const z = this.camera.position[2];
-    console.log(`Camera position: x: ${x}, y: ${y}, z: ${z}`)
+    this.pushMatrix();
+    this.translate(...splatVec3(this.beePosition));
+    this.bee.display();
+    this.popMatrix();
 
     if (this.cameraFocusBee) {
-      if (this.didUpdateCamera) {
-        // console.log(`Camera focus bee, didUpdateCamera: true`)
-      } else {
-        console.log(`Camera focus bee, didUpdateCamera: false`)
-        // console.log(`Camera: didUpdateCamera is false, current pos: ${this.camera.position}`)
-      }
-      // console.log("Camera: focus on bee, previousCameraPosition: ", this.previousCameraPosition);
-      
       if (!this.didUpdateCamera) {
+        // Save previous camera position so we have something to return to
         vec3.copy(this.previousCameraPosition, this.camera.position);
-
-        const newCameraPosition = vec3.create();
-        const translationVec = vec3.fromValues(5, 5, 5);
-        vec3.add(newCameraPosition, this.beePosition, translationVec)
-        this.camera.setPosition(newCameraPosition);
-        this.camera.setTarget(this.beePosition);
-
         this.didUpdateCamera = true;
       }
-    } else {
-      if (this.didUpdateCamera) {
-        // console.log(`Camera focus center, didUpdateCamera: true`)
-      } else {
-        console.log(`Camera focus center, didUpdateCamera: false`)
-        const ppos = this.previousCameraPosition;
-        const x = ppos[0];
-        const y = ppos[1];
-        const z = ppos[2];
-        console.log("Camera: focus on center, previous position: ", x, y, z);
-      }
 
+      vec3.add(this.newCameraPosition, this.beePosition, CAM_TRANSLATION_VEC);
+      this.camera.setPosition(this.newCameraPosition);
+      this.camera.setTarget(this.beePosition);
+    } else {
       if (!this.didUpdateCamera) {
         this.camera.setPosition(this.previousCameraPosition);
         this.camera.setTarget(vec3.create());
         this.didUpdateCamera = true;
       }
     }
-
-    this.pushMatrix();
-    this.translate(...splatVec3(this.beePosition));
-    // this.translate(this.beeCoords.x, this.beeCoords.y, this.beeCoords.z);
-    this.bee.display();
-    this.popMatrix();
 
     this.pushMatrix();
     this.panoramaAppearance.apply();
