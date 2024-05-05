@@ -72,6 +72,12 @@ export class MyFlower extends CGFobject {
     // Display stem parts
     for (let i = 0; i < this.stemParts.length; i++) {
       const y = 0 - i * 1.1;
+
+      // Green color
+      this.scene.setAmbient(0, 0.25, 0, 1);
+      this.scene.setDiffuse(0, 0.25, 0, 1);
+      this.scene.setSpecular(0, 0, 0, 1);
+
       this.scene.pushMatrix();
       this.scene.translate(0, y, 0);
       this.scene.scale(0.3, 1, 0.3);
@@ -81,27 +87,27 @@ export class MyFlower extends CGFobject {
     }
 
     // Display receptacle
-    this.scene.setAmbient(1, 1, 0, 1);
-    this.scene.setDiffuse(1, 1, 0, 1);
-    this.scene.setSpecular(1, 1, 1, 1);
-    this.scene.pushMatrix();
-    this.scene.translate(0, 0, 0);
-    this.receptacle.display();
-    this.scene.popMatrix();
+    {
+      // Yellow color
+      this.scene.setAmbient(1, 1, 0, 1);
+      this.scene.setDiffuse(1, 1, 0, 1);
+      this.scene.setSpecular(0, 0, 0, 1);
+
+      this.scene.pushMatrix();
+      this.scene.translate(0, 0, 0);
+      this.receptacle.display();
+      this.scene.popMatrix();
+    }
 
     // Display petals
     for (let i = 0; i < this.petals.length; i++) {
       const increment = (Math.PI * 2) / this.petalCount;
       const rotation = increment * i;
 
-      this.scene.setAmbient(1, 192 / 255, 204 / 255, 1);
-      this.scene.setDiffuse(1, 192 / 255, 204 / 255, 1);
-
       this.scene.pushMatrix();
       this.scene.rotate(rotation, 0, 1, 0);
 
       // Randomize the point where petal connects to the receptacle
-      const y = getRandom(0, 0.5);
       this.scene.translate(0, 0, this.petalYoffsets[i]);
 
       this.petals[i].display();
@@ -136,20 +142,16 @@ class Receptacle extends CGFobject {
       const angle = delta * i;
 
       const point1 = [Math.cos(angle + delta), 0, Math.sin(angle + delta)];
-      const point2 = [Math.cos(angle),         0, Math.sin(angle)];
+      const point2 = [Math.cos(angle), 0, Math.sin(angle)];
+      const normal = crossProduct(centerPoint, point1, point2);
 
       this.vertices.push(...centerPoint, ...point1, ...point2);
       this.indices.push(i * 3, i * 3 + 1, i * 3 + 2);
-
-      const normal = crossProduct(centerPoint, point1, point2);
-      // console.log(`normal: ${normal}`);
-
       this.normals.push(...normal, ...normal, ...normal);
-      // this.normals.push(...[1, 1, 1], ...[1, 1, 1], ...[1, 1, 1]);
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+    this.initGLBuffers();
   }
 }
 
@@ -157,12 +159,18 @@ class Receptacle extends CGFobject {
  * Represents a petal. It's composed of two triangles joined together.
  */
 class Petal extends CGFobject {
-  constructor(scene, length = 2, peakHeight = 1) {
+  constructor(
+    scene,
+    length = 2,
+    peakHeight = 1,
+    color = [1, 192/255, 204/255],
+  ) {
     super(scene);
 
     this.scene = scene;
     this.length = length;
     this.peakHeight = peakHeight;
+    this.color = color;
 
     this.firstTriangle = new Triangle(scene, this.length, this.peakHeight);
     this.secondTriangle = new Triangle(scene, this.length, this.peakHeight);
@@ -182,21 +190,21 @@ class Petal extends CGFobject {
     this.secondTriangle.disableNormalViz();
   }
 
-  initBuffers() {
-    this.vertices = [];
-    this.indices = [];
-    this.normals = [];
-  }
-
   display() {
-    // The triangle closer to center
+    this.scene.setAmbient(0, 0, 0, 0);
+    this.scene.setDiffuse(0, 0, 0, 0);
+    this.scene.setSpecular(1, 1, 1, 1);
+    this.scene.setShininess(10);
+    this.scene.setAmbient(this.color[0], this.color[1], this.color[2], 1.0);
+    this.scene.setDiffuse(this.color[0], this.color[1], this.color[2], 1.0);
+    this.scene.setSpecular(0.1, 0.1, 0.1, 1.0);
 
+    // The triangle closer to center
     this.scene.pushMatrix();
     this.firstTriangle.display();
     this.scene.popMatrix();
 
     // The triangle farther from center
-
     this.scene.pushMatrix();
     this.scene.translate(0, 0, this.length * 2);
     this.scene.scale(1, 1, -1);

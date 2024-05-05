@@ -34,10 +34,10 @@ export class MyScene extends CGFscene {
 
         //------ Applied Material
         this.quadMaterial = new CGFappearance(this);
-        this.quadMaterial.setAmbient(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.quadMaterial.setSpecular(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setShininess(10.0);
+        this.quadMaterial.setAmbient(0.0, 0.0, 0.0, 1);
+        this.quadMaterial.setDiffuse(0.0, 0.0, 0.0, 1);
+        this.quadMaterial.setSpecular(0.0, 0.0, 0.0, 1);
+        this.quadMaterial.setShininess(0.0);
         this.quadMaterial.loadTexture('images/default.png');
         this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
         //------
@@ -73,11 +73,14 @@ export class MyScene extends CGFscene {
     initLights() {
         this.lights[0].setPosition(5, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.lights[1].setLinearAttenuation(0.0);
+        this.lights[1].setConstantAttenuation(0.0);
         this.lights[0].enable();
         this.lights[0].update();
 
         this.lights[1].setPosition(0, 0, 0, 1);
         this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.lights[1].setLinearAttenuation(0.0);
         this.lights[1].setConstantAttenuation(0.0);
         this.lights[1].enable();
         this.lights[1].update();
