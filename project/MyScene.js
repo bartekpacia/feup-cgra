@@ -12,6 +12,7 @@ import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyUnitCube } from "./MyUnitCube.js";
+import { splatVec3 } from "./common.js"
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -62,11 +63,11 @@ export class MyScene extends CGFscene {
     this.cameraFocusBee = false;
 
     // State variables
-    this.cameraToggleReady = true;
-    this.previousCameraPosition = vec3.fromValues(0, 0, 0);
-    this.previousCameraTarget = vec3.fromValues(0, 0, 0);
+    this.beePosition = vec3.create();
+    this.previousCameraPosition = vec3.create();
+    this.previousCameraTarget = vec3.create();
     this.didUpdateCamera = true;
-    this.beeCoords = { x: 0, y: 0, z: 0 };
+    this.cameraToggleReady = true;
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -148,13 +149,20 @@ export class MyScene extends CGFscene {
       keysPressed = true;
     }
 
+    let x = 0;
+    let y = 0;
+    let z = 0;
     // if (keysPressed) console.log(`GUI text: "${text}"`);
-    if (text.includes("W")) this.beeCoords.z -= 0.1;
-    if (text.includes("A")) this.beeCoords.x -= 0.1;
-    if (text.includes("S")) this.beeCoords.z += 0.1;
-    if (text.includes("D")) this.beeCoords.x += 0.1;
-    if (text.includes("^")) this.beeCoords.y += 0.1;
-    if (text.includes("v")) this.beeCoords.y -= 0.1;
+    if (text.includes("W")) z -= 0.1;
+    if (text.includes("A")) x -= 0.1;
+    if (text.includes("S")) z += 0.1;
+    if (text.includes("D")) x += 0.1;
+    if (text.includes("^")) y += 0.1;
+    if (text.includes("v")) y -= 0.1;
+
+    const translationVec = vec3.fromValues(x, y, z);
+    vec3.add(this.beePosition, this.beePosition, translationVec)
+
     if (text.includes(" ")) {
       // Enforce 0.5 second cooldown
       if (this.cameraToggleReady) {
@@ -200,13 +208,13 @@ export class MyScene extends CGFscene {
       
       if (!this.didUpdateCamera) {
         vec3.copy(this.previousCameraPosition, this.camera.position);
-        this.camera.setPosition(
-          vec3.fromValues(
-            this.beeCoords.x + 5,
-            this.beeCoords.y + 5,
-            this.beeCoords.z + 5
-          ),
-        );
+
+        const newCameraPosition = vec3.create();
+        const translationVec = vec3.fromValues(5, 5, 5);
+        vec3.add(newCameraPosition, this.beePosition, translationVec)
+        this.camera.setPosition(newCameraPosition);
+        this.camera.setTarget(this.beePosition);
+
         this.didUpdateCamera = true;
       }
     } else {
@@ -222,44 +230,15 @@ export class MyScene extends CGFscene {
       }
 
       if (!this.didUpdateCamera) {
-        this.camera.setPosition(
-          vec3.fromValues(
-            this.previousCameraPosition[0],
-            this.previousCameraPosition[1],
-            this.previousCameraPosition[2],
-          ),
-        );
+        this.camera.setPosition(this.previousCameraPosition);
+        this.camera.setTarget(vec3.create());
         this.didUpdateCamera = true;
       }
     }
 
-
-    /* if (this.cameraFocusBee) {
-      if (!this.didUpdateCamera) {
-        console.log(`Camera: didUpdateCamera is false, current pos: ${this.camera.position}`)
-        this.previousCameraPosition = this.camera.position;
-      }
-      console.log("Camera: focus on bee, previousCameraPosition: ", this.previousCameraPosition);
-      this.didUpdateCamera = true;
-      this.camera.setPosition(
-        this.beeCoords.x + 5,
-        this.beeCoords.y + 5,
-        this.beeCoords.z + 5
-      );
-    } else {
-      if (!this.didUpdateCamera) {
-        const ppos = this.previousCameraPosition;
-        const x = ppos[0];
-        const y = ppos[1];
-        const z = ppos[2];
-        console.log("Camera: focus on center, previous position: ", x, y, z);
-        this.camera.setPosition(x, y, z);
-        this.didUpdateCamera = true;
-      }
-    } */
-
     this.pushMatrix();
-    this.translate(this.beeCoords.x, this.beeCoords.y, this.beeCoords.z);
+    this.translate(...splatVec3(this.beePosition));
+    // this.translate(this.beeCoords.x, this.beeCoords.y, this.beeCoords.z);
     this.bee.display();
     this.popMatrix();
 
