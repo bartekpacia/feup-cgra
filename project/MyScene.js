@@ -62,8 +62,10 @@ export class MyScene extends CGFscene {
     this.cameraFocusBee = false;
 
     // State variables
-    this.previousCameraPosition = vec4.fromValues(0, 0, 0, 0);
-    this.didUpdateCameraPos = true;
+    this.cameraToggleReady = true;
+    this.previousCameraPosition = vec3.fromValues(0, 0, 0);
+    this.previousCameraTarget = vec3.fromValues(0, 0, 0);
+    this.didUpdateCamera = true;
     this.beeCoords = { x: 0, y: 0, z: 0 };
 
     // Objects connected to MyInterface
@@ -100,8 +102,8 @@ export class MyScene extends CGFscene {
       0.1,
       1000,
       //vec3.fromValues(200, 200, 200),
-      vec3.fromValues(6, 6, 5),
-      vec3.fromValues(0, 0, 0)
+      vec3.fromValues(6, 6, 5), /* position */
+      vec3.fromValues(0, 0, 0), /* target */
     );
   }
 
@@ -146,8 +148,7 @@ export class MyScene extends CGFscene {
       keysPressed = true;
     }
 
-    if (keysPressed) console.log(`GUI text: "${text}"`);
-
+    // if (keysPressed) console.log(`GUI text: "${text}"`);
     if (text.includes("W")) this.beeCoords.z -= 0.1;
     if (text.includes("A")) this.beeCoords.x -= 0.1;
     if (text.includes("S")) this.beeCoords.z += 0.1;
@@ -155,8 +156,13 @@ export class MyScene extends CGFscene {
     if (text.includes("^")) this.beeCoords.y += 0.1;
     if (text.includes("v")) this.beeCoords.y -= 0.1;
     if (text.includes(" ")) {
-      this.didUpdateCameraPos = false;
-      this.cameraFocusBee = !this.cameraFocusBee;
+      // Enforce 0.5 second cooldown
+      if (this.cameraToggleReady) {
+        this.didUpdateCamera = false;
+        this.cameraFocusBee = !this.cameraFocusBee;
+        this.cameraToggleReady = false;
+        setTimeout(() => this.cameraToggleReady = true, 500);
+      }
     }
   }
 
@@ -178,26 +184,79 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
+    const x = this.camera.position[0];
+    const y = this.camera.position[1];
+    const z = this.camera.position[2];
+    console.log(`Camera position: x: ${x}, y: ${y}, z: ${z}`)
+
     if (this.cameraFocusBee) {
-      if (!this.didUpdateCameraPos) {
-        this.previousCameraPosition = this.camera.position;
-        return;
+      if (this.didUpdateCamera) {
+        // console.log(`Camera focus bee, didUpdateCamera: true`)
+      } else {
+        console.log(`Camera focus bee, didUpdateCamera: false`)
+        // console.log(`Camera: didUpdateCamera is false, current pos: ${this.camera.position}`)
       }
-      console.log("focus on bee, previousCameraPosition: ", this.previousCameraPosition);
-      this.didUpdateCameraPos = true;
+      // console.log("Camera: focus on bee, previousCameraPosition: ", this.previousCameraPosition);
+      
+      if (!this.didUpdateCamera) {
+        vec3.copy(this.previousCameraPosition, this.camera.position);
+        this.camera.setPosition(
+          vec3.fromValues(
+            this.beeCoords.x + 5,
+            this.beeCoords.y + 5,
+            this.beeCoords.z + 5
+          ),
+        );
+        this.didUpdateCamera = true;
+      }
+    } else {
+      if (this.didUpdateCamera) {
+        // console.log(`Camera focus center, didUpdateCamera: true`)
+      } else {
+        console.log(`Camera focus center, didUpdateCamera: false`)
+        const ppos = this.previousCameraPosition;
+        const x = ppos[0];
+        const y = ppos[1];
+        const z = ppos[2];
+        console.log("Camera: focus on center, previous position: ", x, y, z);
+      }
+
+      if (!this.didUpdateCamera) {
+        this.camera.setPosition(
+          vec3.fromValues(
+            this.previousCameraPosition[0],
+            this.previousCameraPosition[1],
+            this.previousCameraPosition[2],
+          ),
+        );
+        this.didUpdateCamera = true;
+      }
+    }
+
+
+    /* if (this.cameraFocusBee) {
+      if (!this.didUpdateCamera) {
+        console.log(`Camera: didUpdateCamera is false, current pos: ${this.camera.position}`)
+        this.previousCameraPosition = this.camera.position;
+      }
+      console.log("Camera: focus on bee, previousCameraPosition: ", this.previousCameraPosition);
+      this.didUpdateCamera = true;
       this.camera.setPosition(
         this.beeCoords.x + 5,
         this.beeCoords.y + 5,
         this.beeCoords.z + 5
       );
     } else {
-      if (this.didUpdateCameraPos) return;
-
-      const ppos = this.previousCameraPosition;
-      console.log("focus on center, previousCameraPosition: ", ppos);
-      this.camera.setPosition(ppos[0], ppos[1], ppos[2]);
-      this.didUpdateCameraPos = true;
-    }
+      if (!this.didUpdateCamera) {
+        const ppos = this.previousCameraPosition;
+        const x = ppos[0];
+        const y = ppos[1];
+        const z = ppos[2];
+        console.log("Camera: focus on center, previous position: ", x, y, z);
+        this.camera.setPosition(x, y, z);
+        this.didUpdateCamera = true;
+      }
+    } */
 
     this.pushMatrix();
     this.translate(this.beeCoords.x, this.beeCoords.y, this.beeCoords.z);
