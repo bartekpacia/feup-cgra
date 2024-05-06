@@ -1,7 +1,7 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MySphere extends CGFobject {
-  constructor(scene, slices, stacks) {
+  constructor(scene, slices = 30, stacks = 30) {
     super(scene);
     this.slices = slices;
     this.stacks = stacks;

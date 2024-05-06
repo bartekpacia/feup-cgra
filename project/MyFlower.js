@@ -2,6 +2,7 @@ import { CGFobject } from "../lib/CGF.js";
 import { Triangle } from "./primitives/Triangle.js";
 import { MyCylinder } from "./MyCylinder.js";
 import { getRandom, crossProduct } from "./common.js";
+import { MyPollen } from "./MyPollen.js";
 
 /**
  * Flower consists of stem, center (aka stamen) and petals.
@@ -13,6 +14,8 @@ export class MyFlower extends CGFobject {
     this.scene = scene;
     this.petalCount = petalCount;
     this.stemPartsCount = stemPartsCount;
+    this.pollenPosition = [getRandom(-0.5, 0.5), 0.5, getRandom(-0.5, 0.5)];
+    this.pollen = new MyPollen(scene);
 
     this.stemParts = [];
     for (let i = 0; i < this.stemPartsCount; i++) {
@@ -69,6 +72,14 @@ export class MyFlower extends CGFobject {
   }
 
   display() {
+    // Display the pollen
+    {
+      this.scene.pushMatrix();
+      this.scene.translate(...this.pollenPosition);
+      this.pollen.display();
+      this.scene.popMatrix();
+    }
+
     // Display stem parts
     for (let i = 0; i < this.stemParts.length; i++) {
       const y = 0 - i * 1.1;
