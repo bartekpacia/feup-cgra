@@ -39,6 +39,7 @@ export class MyScene extends CGFscene {
     this.planeTexture = new CGFtexture(this, "images/grass_texture.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
+    this.pollenTexture = new CGFtexture(this, "images/pollen.jpg");
 
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
