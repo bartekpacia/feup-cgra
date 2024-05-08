@@ -15,6 +15,7 @@ import { MyUnitCube } from "./MyUnitCube.js";
 import { splatVec3 } from "./common.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
+const SPEED = 0.1;
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -157,12 +158,12 @@ export class MyScene extends CGFscene {
     let y = 0;
     let z = 0;
     // if (keysPressed) console.log(`GUI text: "${text}"`);
-    if (text.includes("W")) z -= 1;
-    if (text.includes("A")) x -= 1;
-    if (text.includes("S")) z += 1;
-    if (text.includes("D")) x += 1;
-    if (text.includes("^")) y += 1;
-    if (text.includes("v")) y -= 1;
+    if (text.includes("W")) z -= SPEED;
+    if (text.includes("A")) x -= SPEED;
+    if (text.includes("S")) z += SPEED;
+    if (text.includes("D")) x += SPEED;
+    if (text.includes("^")) y += SPEED;
+    if (text.includes("v")) y -= SPEED;
 
     const translationVec = vec3.fromValues(x, y, z);
     vec3.add(this.beePosition, this.beePosition, translationVec);
