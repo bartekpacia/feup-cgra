@@ -11,8 +11,8 @@ import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
-import { MyUnitCube } from "./MyUnitCube.js";
 import { splatVec3 } from "./common.js";
+import { Bee } from "./Bee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 const SPEED = 0.1;
@@ -63,11 +63,10 @@ export class MyScene extends CGFscene {
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
-    this.bee = new MyUnitCube(this);
+    this.bee = new Bee(this);
     this.cameraFocusBee = false;
 
     // State variables
-    this.beePosition = vec3.create();
     this.previousCameraPosition = vec3.create();
     this.previousCameraTarget = vec3.create();
     this.didUpdateCamera = true;
@@ -166,7 +165,7 @@ export class MyScene extends CGFscene {
     if (text.includes("v")) y -= SPEED;
 
     const translationVec = vec3.fromValues(x, y, z);
-    vec3.add(this.beePosition, this.beePosition, translationVec);
+    vec3.add(this.bee.position, this.bee.position, translationVec);
 
     if (text.includes(" ")) {
       // Enforce 0.5 second cooldown
@@ -197,10 +196,7 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
-    this.pushMatrix();
-    this.translate(...splatVec3(this.beePosition));
     this.bee.display();
-    this.popMatrix();
 
     if (this.cameraFocusBee) {
       if (!this.didUpdateCamera) {
@@ -209,9 +205,9 @@ export class MyScene extends CGFscene {
         this.didUpdateCamera = true;
       }
 
-      vec3.add(this.newCameraPosition, this.beePosition, CAM_TRANSLATION_VEC);
+      vec3.add(this.newCameraPosition, this.bee.position, CAM_TRANSLATION_VEC);
       this.camera.setPosition(this.newCameraPosition);
-      this.camera.setTarget(this.beePosition);
+      this.camera.setTarget(this.bee.position);
     } else {
       if (!this.didUpdateCamera) {
         this.camera.setPosition(this.previousCameraPosition);
