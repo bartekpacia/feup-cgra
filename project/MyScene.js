@@ -123,41 +123,15 @@ export class MyScene extends CGFscene {
 
   checkKeys() {
     let text = "";
-    let keysPressed = false;
-
     // Check for key codes e.g. in https://keycode.info
-    if (this.gui.isKeyPressed("KeyW")) {
-      text += "W";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyA")) {
-      text += "A";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyS")) {
-      text += "S";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyD")) {
-      text += "D";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("ArrowUp")) {
-      text += "^";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("ArrowDown")) {
-      text += "v";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("Space")) {
-      text += " ";
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyR")) {
-      text += "R";
-      keysPressed = true;
-    }
+    if (this.gui.isKeyPressed("KeyW")) text += "W";
+    if (this.gui.isKeyPressed("KeyA")) text += "A";
+    if (this.gui.isKeyPressed("KeyS")) text += "S";
+    if (this.gui.isKeyPressed("KeyD")) text += "D";
+    if (this.gui.isKeyPressed("ArrowUp")) text += "^";
+    if (this.gui.isKeyPressed("ArrowDown")) text += "v";
+    if (this.gui.isKeyPressed("Space")) text += " ";
+    if (this.gui.isKeyPressed("KeyR")) text += "R";
 
     let move = 0;
     let y = 0;
