@@ -2,8 +2,6 @@ import { CGFobject } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
 import { splatVec3 } from "./common.js";
 
-const ACC_VEC = vec3.fromValues(0.1, 0.1, 0.1);
-
 // This is MyUnitCube .
 export class Bee extends CGFobject {
 	constructor(scene) {
@@ -23,7 +21,7 @@ export class Bee extends CGFobject {
 	}
     
     accelerate(speedDelta) {
-        const diffVec = vec3.fromValues(0, 0, 1 * speedDelta);
+        const diffVec = vec3.fromValues(0, 0, 0.1 * speedDelta);
         vec3.add(this.velocity, this.velocity, diffVec);
 
         // TODO: Multiply velocity matrix. Do not modify position.
@@ -35,10 +33,18 @@ export class Bee extends CGFobject {
         // TODO: Recalculate "velocity" vector
     }
 
-    // Like display, but only for modifying state variables.
+    /// Like display, but only for modifying state variables.
     update() {
         vec3.add(this.position, this.position, this.velocity);
         console.log(`Bee.update(): pos: ${this.position}, vel: ${this.velocity}`);
+    }
+
+    /// Move the bee to the center and stop all movement.
+    reset() {
+        console.log(`Bee.reset()`);
+        vec3.set(this.position, 0, 0, 0);
+        vec3.set(this.velocity, 0, 0, 0);
+        this.orientation = 0;
     }
 
     display() {

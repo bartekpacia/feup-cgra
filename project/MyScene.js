@@ -71,7 +71,8 @@ export class MyScene extends CGFscene {
     this.previousCameraPosition = vec3.create();
     this.previousCameraTarget = vec3.create();
     this.didUpdateCamera = true;
-    this.cameraToggleReady = true;
+    this.cameraSwitchReady = true;
+    this.beePositionResetReady = true;
     this.newCameraPosition = vec3.create();
 
     // Objects connected to MyInterface
@@ -153,6 +154,10 @@ export class MyScene extends CGFscene {
       text += " ";
       keysPressed = true;
     }
+    if (this.gui.isKeyPressed("KeyR")) {
+      text += "R";
+      keysPressed = true;
+    }
 
     let move = 0;
     let y = 0;
@@ -169,13 +174,21 @@ export class MyScene extends CGFscene {
     // const translationVec = vec3.fromValues(x, y, z);
     // vec3.add(this.bee.position, this.bee.position, translationVec);
 
+    // Enforce 0.5 second cooldown for some actions
     if (text.includes(" ")) {
-      // Enforce 0.5 second cooldown
-      if (this.cameraToggleReady) {
+      if (this.cameraSwitchReady) {
         this.didUpdateCamera = false;
         this.cameraFocusBee = !this.cameraFocusBee;
-        this.cameraToggleReady = false;
-        setTimeout(() => (this.cameraToggleReady = true), 500);
+        this.cameraSwitchReady = false;
+        setTimeout(() => (this.cameraSwitchReady = true), 500);
+      }
+    }
+
+    if (text.includes("R")) {
+      if (this.beePositionResetReady) {
+        this.beePositionResetReady = false;
+        this.bee.reset();
+        setTimeout(() => (this.beePositionResetReady = true), 500);
       }
     }
   }
