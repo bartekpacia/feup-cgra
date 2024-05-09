@@ -21,8 +21,7 @@ export class Bee extends CGFobject {
 	}
     
     accelerate(speedDelta) {
-        const diffVec = vec3.fromValues(0, 0, 0.1 * speedDelta);
-        vec3.add(this.velocity, this.velocity, diffVec);
+        vec3.set(this.velocity, this.velocity[0], this.velocity[1], this.velocity[2] + 0.1 * speedDelta);
 
         // TODO: Multiply velocity matrix. Do not modify position.
     }

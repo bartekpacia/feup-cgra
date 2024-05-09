@@ -26,9 +26,6 @@ export class MyScene extends CGFscene {
   init(application) {
     super.init(application);
 
-    this.initCameras();
-    this.initLights();
-
     // Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -68,9 +65,9 @@ export class MyScene extends CGFscene {
     this.cameraFocusBee = false;
 
     // State variables
-    this.previousCameraPosition = vec3.create();
-    this.previousCameraTarget = vec3.create();
-    this.didUpdateCamera = true;
+    this.staticCameraPosition = vec3.fromValues(6, 6, 5); // Position of camera when in not-follow (static) mode
+    this.staticCameraTarget = vec3.create(); // Target of camera when in not-follow (static) mode
+    this.didUpdateCameraState = true;
     this.cameraSwitchReady = true;
     this.beePositionResetReady = true;
     this.newCameraPosition = vec3.create();
@@ -80,6 +77,8 @@ export class MyScene extends CGFscene {
     this.displayNormals = false;
     this.scaleFactor = 1;
 
+    this.initCameras();
+    this.initLights();
     this.enableTextures(true);
   }
 
@@ -108,9 +107,8 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      //vec3.fromValues(200, 200, 200),
-      vec3.fromValues(6, 6, 5) /* position */,
-      vec3.fromValues(0, 0, 0) /* target */
+      this.staticCameraPosition, /* position */
+      vec3.fromValues(0, 0, 0), /* target */
     );
   }
 
@@ -148,13 +146,13 @@ export class MyScene extends CGFscene {
     // const translationVec = vec3.fromValues(x, y, z);
     // vec3.add(this.bee.position, this.bee.position, translationVec);
 
-    // Enforce 0.5 second cooldown for some actions
+    // Enforce a small second cooldown for some actions
     if (text.includes(" ")) {
       if (this.cameraSwitchReady) {
-        this.didUpdateCamera = false;
+        this.didUpdateCameraState = false;
         this.cameraFocusBee = !this.cameraFocusBee;
         this.cameraSwitchReady = false;
-        setTimeout(() => (this.cameraSwitchReady = true), 500);
+        setTimeout(() => (this.cameraSwitchReady = true), 100);
       }
     }
 
@@ -162,7 +160,7 @@ export class MyScene extends CGFscene {
       if (this.beePositionResetReady) {
         this.beePositionResetReady = false;
         this.bee.reset();
-        setTimeout(() => (this.beePositionResetReady = true), 500);
+        setTimeout(() => (this.beePositionResetReady = true), 100);
       }
     }
   }
@@ -188,20 +186,26 @@ export class MyScene extends CGFscene {
     this.bee.display();
 
     if (this.cameraFocusBee) {
-      if (!this.didUpdateCamera) {
+      if (!this.didUpdateCameraState) {
         // Save previous camera position so we have something to return to
-        vec3.copy(this.previousCameraPosition, this.camera.position);
-        this.didUpdateCamera = true;
+        vec3.copy(this.staticCameraPosition, this.camera.position);
+        this.didUpdateCameraState = true;
       }
+
+      // TODO:
+      // We need to merge 2 camera positions:
+      //  1. Position that follows the bee
+      //  2. Position reflecting the user's rotation around the moving bee
 
       vec3.add(this.newCameraPosition, this.bee.position, CAM_TRANSLATION_VEC);
       this.camera.setPosition(this.newCameraPosition);
       this.camera.setTarget(this.bee.position);
     } else {
-      if (!this.didUpdateCamera) {
-        this.camera.setPosition(this.previousCameraPosition);
+      // Camera is not following the bee.
+      if (!this.didUpdateCameraState) {
+        this.camera.setPosition(this.staticCameraPosition);
         this.camera.setTarget(vec3.create());
-        this.didUpdateCamera = true;
+        this.didUpdateCameraState = true;
       }
     }
 
@@ -210,7 +214,7 @@ export class MyScene extends CGFscene {
     this.translate(
       this.camera.position[0],
       this.camera.position[1],
-      this.camera.position[2]
+      this.camera.position[2],
     );
     this.rotate(Math.PI / 2, 1, 0, 0);
     if (this.displayNormals) {
