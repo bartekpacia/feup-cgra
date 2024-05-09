@@ -2,21 +2,44 @@ import { CGFobject } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
 import { splatVec3 } from "./common.js";
 
+const ACC_VEC = vec3.fromValues(0.1, 0.1, 0.1);
+
 // This is MyUnitCube .
 export class Bee extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.initBuffers();
 
+        // Position is not to be modified directly, but by simulation.
         this.position = vec3.create();
 
         // Angle around the XY axis in radians. From 0 to 2π.
         this.orientation = 0;
+        this.velocity = vec3.create();
 
         // the two spheres imitate the eyes of the bee
         this.leftEye = new MySphere(this.scene);
         this.rightEye = new MySphere(this.scene);
 	}
+    
+    accelerate(speedDelta) {
+        const diffVec = vec3.fromValues(0, 0, 1 * speedDelta);
+        vec3.add(this.velocity, this.velocity, diffVec);
+
+        // TODO: Multiply velocity matrix. Do not modify position.
+    }
+
+    turn(radians) {
+        this.orientation += radians;
+
+        // TODO: Recalculate "velocity" vector
+    }
+
+    // Like display, but only for modifying state variables.
+    update() {
+        vec3.add(this.position, this.position, this.velocity);
+        console.log(`Bee.update(): pos: ${this.position}, vel: ${this.velocity}`);
+    }
 
     display() {
         this.scene.pushMatrix();

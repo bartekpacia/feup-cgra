@@ -15,7 +15,8 @@ import { splatVec3 } from "./common.js";
 import { Bee } from "./Bee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
-const SPEED = 0.1;
+const SPEED_DELTA = 0.1;
+const ROTATION_DELTA = 0.1;
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -153,19 +154,20 @@ export class MyScene extends CGFscene {
       keysPressed = true;
     }
 
-    let x = 0;
+    let move = 0;
     let y = 0;
-    let z = 0;
+    let rotate = 0;
     // if (keysPressed) console.log(`GUI text: "${text}"`);
-    if (text.includes("W")) z -= SPEED;
-    if (text.includes("A")) x -= SPEED;
-    if (text.includes("S")) z += SPEED;
-    if (text.includes("D")) x += SPEED;
-    if (text.includes("^")) y += SPEED;
-    if (text.includes("v")) y -= SPEED;
+    if (text.includes("W")) this.bee.accelerate(-SPEED_DELTA);
+    if (text.includes("S")) this.bee.accelerate(+SPEED_DELTA);
+    if (text.includes("^")) {} // this.bee.accelerate(0, +SPEED_DELTA);
+    if (text.includes("v")) {} // this.bee.accelerate(0, -SPEED_DELTA);
+    
+    if (text.includes("A")) this.bee.turn(+ROTATION_DELTA);
+    if (text.includes("D")) this.bee.turn(-ROTATION_DELTA);
 
-    const translationVec = vec3.fromValues(x, y, z);
-    vec3.add(this.bee.position, this.bee.position, translationVec);
+    // const translationVec = vec3.fromValues(x, y, z);
+    // vec3.add(this.bee.position, this.bee.position, translationVec);
 
     if (text.includes(" ")) {
       // Enforce 0.5 second cooldown
@@ -189,12 +191,12 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    // ---- BEGIN State update section
     this.checkKeys();
-
-    // Draw axis
-    if (this.displayAxis) this.axis.display();
-
+    this.bee.update();
+    
     // ---- BEGIN Primitive drawing section
+    if (this.displayAxis) this.axis.display();
 
     this.bee.display();
 
