@@ -11,8 +11,8 @@ import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
-import { MyUnitCube } from "./MyUnitCube.js";
 import { splatVec3 } from "./common.js";
+import { MyRockSet } from "./MyRockSet.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 import { MyBee } from "./MyBee.js";
@@ -58,7 +58,7 @@ export class MyScene extends CGFscene {
 
     this.beeAppearance = new CGFappearance(this);
     this.beeAppearance.setTexture(this.beeTexture);
-    this.beeAppearance.setTextureWrap("REPEAT", );
+    this.beeAppearance.setTextureWrap("REPEAT", "REPEAT");
 
     // Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -68,9 +68,10 @@ export class MyScene extends CGFscene {
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
-    this.bee = new MyUnitCube(this);
+    //this.bee = new MyUnitCube(this);
     this.cameraFocusBee = false;
     this.myBee = new MyBee(this);
+    this.myRockSet = new MyRockSet(this, 13);
 
     // State variables
     this.beePosition = vec3.create();
@@ -206,7 +207,9 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.translate(...splatVec3(this.beePosition));
-    this.bee.display();
+    this.beeAppearance.apply();
+    this.rotate(-Math.PI/2.0,1,0, 0);
+    this.myBee.display();
     this.popMatrix();
 
     if (this.cameraFocusBee) {
@@ -253,7 +256,7 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.sphereAppearance.apply();
-    this.translate(0, 0, 5);
+    this.translate(0, 0, 9);
     this.rotate(Math.PI / 2.0, 1, 0, 0);
     this.mySphere.display();
     this.popMatrix();
@@ -280,12 +283,11 @@ export class MyScene extends CGFscene {
     this.myRock.display();
     this.popMatrix();
 
-    //diplaying the bee
+
+    //display rock boudlers
     this.pushMatrix();
-    this.beeAppearance.apply();
-    this.translate(0, 5, 0);
-    this.rotate(-Math.PI/2.0,1,0, 0);
-    this.myBee.display();
+    this.translate(5,0,5);
+    this.myRockSet.display();
     this.popMatrix();
 
     // ---- END Primitive drawing section

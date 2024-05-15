@@ -5,6 +5,9 @@ export class MyRock extends CGFobject {
     super(scene);
     this.slices = slices;
     this.stacks = stacks;
+    this.position = [0, 0, 0];
+    this.scale = [1, 1, 1];
+    this.rotation = [0, 0, 0];
     this.initBuffers();
   }
 
@@ -54,5 +57,14 @@ export class MyRock extends CGFobject {
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
+  }
+  setPosition(position){
+    this.position = position;
+  }
+  setScale(scale){
+    this.scale = scale;
+  }
+  setRotation(rotation){
+    this.rotation = rotation;
   }
 }
