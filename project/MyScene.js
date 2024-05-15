@@ -10,6 +10,7 @@ import { MyRock } from "./MyRock.js";
 import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
+import { MyBee } from "./MyBee.js";
 
 export class MyScene extends CGFscene {
   constructor() {
@@ -29,10 +30,10 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
-
     // Initializing the appearances
     this.planeTexture = new CGFtexture(this, "images/grass_texture.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
+    this.beeTexture = new CGFtexture(this, "images/BeeTexture.jpeg" );
 
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
@@ -42,6 +43,10 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+    this.beeAppearance = new CGFappearance(this);
+    this.beeAppearance.setTexture(this.beeTexture);
+    this.beeAppearance.setTextureWrap("REPEAT", "REPEAT");
+
     // Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
@@ -49,6 +54,7 @@ export class MyScene extends CGFscene {
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
+    this.myBee = new MyBee(this);
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -137,6 +143,14 @@ export class MyScene extends CGFscene {
     //this.appearance.apply();
     this.translate(3, 0, 3);
     this.myRock.display();
+    this.popMatrix();
+
+    //diplaying the bee
+    this.pushMatrix();
+    this.beeAppearance.apply();
+    this.translate(0, 5, 0);
+    this.rotate(-Math.PI/2.0,1,0, 0);
+    this.myBee.display();
     this.popMatrix();
 
     // ---- END Primitive drawing section
