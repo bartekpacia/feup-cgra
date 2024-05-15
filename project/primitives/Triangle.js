@@ -21,7 +21,6 @@ export class Triangle extends CGFobject {
     this.normals = [...normal, ...normal, ...normal];
 
     this.primitiveType = this.scene.gl.TRIANGLES;
-
     this.initGLBuffers();
   }
 }

@@ -10,6 +10,10 @@ export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function splatVec3(vec) {
+  return [vec[0], vec[1], vec[2]];
+}
+
 // Returns cross product between points vertex0, vertex1, and vertex2
 export function crossProduct(vertex0, vertex1, vertex2) {
   // Compute not-normalized normal
