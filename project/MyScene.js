@@ -35,6 +35,7 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+
     // Initializing the appearances
     this.planeTexture = new CGFtexture(this, "images/grass_texture.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
@@ -57,7 +58,7 @@ export class MyScene extends CGFscene {
 
     this.beeAppearance = new CGFappearance(this);
     this.beeAppearance.setTexture(this.beeTexture);
-    this.beeAppearance.setTextureWrap("REPEAT", "REPEAT");
+    this.beeAppearance.setTextureWrap("REPEAT", );
 
     // Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -69,6 +70,7 @@ export class MyScene extends CGFscene {
     this.myFlower = new MyFlower(this, 5, 5);
     this.bee = new MyUnitCube(this);
     this.cameraFocusBee = false;
+    this.myBee = new MyBee(this);
 
     // State variables
     this.beePosition = vec3.create();
@@ -77,7 +79,7 @@ export class MyScene extends CGFscene {
     this.didUpdateCamera = true;
     this.cameraToggleReady = true;
     this.newCameraPosition = vec3.create();
-    this.myBee = new MyBee(this);
+   
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -252,6 +254,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.sphereAppearance.apply();
     this.translate(0, 0, 5);
+    this.rotate(Math.PI / 2.0, 1, 0, 0);
     this.mySphere.display();
     this.popMatrix();
 
@@ -271,8 +274,8 @@ export class MyScene extends CGFscene {
     }
     this.popMatrix();
 
+   //displaying the rock 
     this.pushMatrix();
-    // this.appearance.apply();
     this.translate(3, 0, 3);
     this.myRock.display();
     this.popMatrix();
