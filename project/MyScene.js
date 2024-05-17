@@ -197,9 +197,9 @@ export class MyScene extends CGFscene {
       //  1. Position that follows the bee
       //  2. Position reflecting the user's rotation around the moving bee
 
-      vec3.add(this.newCameraPosition, this.bee.position, CAM_TRANSLATION_VEC);
+      vec3.add(this.newCameraPosition, this.bee._position, CAM_TRANSLATION_VEC);
       this.camera.setPosition(this.newCameraPosition);
-      this.camera.setTarget(this.bee.position);
+      this.camera.setTarget(this.bee._position);
     } else {
       // Camera is not following the bee.
       if (!this.didUpdateCameraState) {

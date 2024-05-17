@@ -9,11 +9,12 @@ export class Bee extends CGFobject {
 		this.initBuffers();
 
         // Position is not to be modified directly, but by simulation.
-        this.position = vec3.create();
+        this._position = vec3.create();
 
         // Angle around the XY axis in radians. From 0 to 2π.
-        this.orientation = 0;
-        this.velocity = vec3.create();
+        this._orientation = 0;
+        this._velocity = vec3.create();
+        this.rotation = mat4.create(); mat4.identity(this.rotation);
 
         // the two spheres imitate the eyes of the bee
         this.leftEye = new MySphere(this.scene);
@@ -21,35 +22,53 @@ export class Bee extends CGFobject {
 	}
     
     accelerate(speedDelta) {
-        vec3.set(this.velocity, this.velocity[0], this.velocity[1], this.velocity[2] + 0.1 * speedDelta);
+        console.log(`Bee.accelerate(): speedDelta: ${speedDelta}`);
+        vec3.set(this._velocity, this._velocity[0], this._velocity[1], this._velocity[2] + 0.1 * speedDelta);
 
         // TODO: Multiply velocity matrix. Do not modify position.
+
+        
+
+        // mat4.rotateY(
+
+        // );
+        // rotate(a,x,y,z){mat4.rotate(this.activeMatrix,this.activeMatrix,a,[x,y,z])}
     }
 
     turn(radians) {
-        this.orientation += radians;
+        console.log(`Bee.turn(): radians: ${radians}`);
+        this._orientation += radians;
+
+        mat4.rotateY(this.rotation, this.rotation);
+
+        // vec3.rotateY(
+        //     this._velocity,
+        //     this._velocity,
+        //     this._position,
+        //     this._orientation,    
+        // );
 
         // TODO: Recalculate "velocity" vector
     }
 
     /// Like display, but only for modifying state variables.
     update() {
-        vec3.add(this.position, this.position, this.velocity);
-        console.log(`Bee.update(): pos: ${this.position}, vel: ${this.velocity}`);
+        vec3.add(this._position, this._position, this._velocity);
+        console.log(`Bee.update(): pos: ${this._position}, vel: ${this._velocity}`);
     }
 
     /// Move the bee to the center and stop all movement.
     reset() {
         console.log(`Bee.reset()`);
-        vec3.set(this.position, 0, 0, 0);
-        vec3.set(this.velocity, 0, 0, 0);
-        this.orientation = 0;
+        vec3.set(this._position, 0, 0, 0);
+        vec3.set(this._velocity, 0, 0, 0);
+        this._orientation = 0;
     }
 
     display() {
         this.scene.pushMatrix();
-        this.scene.translate(...splatVec3(this.position));
-        this.scene.rotate(this.orientation, 0, 1, 0);
+        this.scene.translate(...splatVec3(this._position));
+        this.scene.rotate(this._orientation, 0, 1, 0);
         
         this.scene.pushMatrix();
         this.scene.translate(-0.3, 0.6, -0.5);
