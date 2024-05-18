@@ -1,6 +1,6 @@
 import { CGFobject } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
-import { splatVec3 } from "./common.js";
+import { splatVec3, vec3_rotateX, vec3_angle } from "./common.js";
 
 // This is MyUnitCube .
 export class Bee extends CGFobject {
@@ -14,16 +14,44 @@ export class Bee extends CGFobject {
         // Angle around the XY axis in radians. From 0 to 2π.
         this._orientation = 0;
         this._velocity = vec3.create();
-        this.rotation = mat4.create(); mat4.identity(this.rotation);
+        // this.rotation = mat4.create(); mat4.identity(this.rotation);
 
         // the two spheres imitate the eyes of the bee
         this.leftEye = new MySphere(this.scene);
         this.rightEye = new MySphere(this.scene);
 	}
+
+    // Get the unit rotation vector. It will always be perpendicular to the XZ
+    // plane.
+    rotation() {
+        return vec3.fromValues(
+            Math.cos(this._orientation),
+            Math.sin(this._orientation),
+            0,
+        );
+    }
     
     accelerate(speedDelta) {
-        console.log(`Bee.accelerate(): speedDelta: ${speedDelta}`);
-        vec3.set(this._velocity, this._velocity[0], this._velocity[1], this._velocity[2] + 0.1 * speedDelta);
+        // console.log(`Bee.accelerate(): speedDelta: ${speedDelta}`);
+        // if (this._velocity[0] == 0 && this._velocity[1] == 0 && this._velocity[2] == 0) {
+            
+
+        const normalizedRotation = vec3.create();
+        vec3.normalize(normalizedRotation, this.rotation());
+        normalizedRotation[0] = normalizedRotation[0] * speedDelta;
+        normalizedRotation[1] = normalizedRotation[1] * speedDelta;
+        normalizedRotation[2] = normalizedRotation[2] * speedDelta;
+
+        this._velocity[0] = this._velocity[0] + normalizedRotation[0];
+        this._velocity[1] = this._velocity[1] + normalizedRotation[1];
+        this._velocity[2] = this._velocity[2] + normalizedRotation[2];
+        
+        // normalizedRotation.add(normalizedRotation, normalizedRotation, ACC);
+
+        // vec3.set(
+        //     this._velocity + ,
+        //     this._velocity[0],
+        //     this._velocity[1],this._velocity[2] + 0.1 * speedDelta);
 
         // TODO: Multiply velocity matrix. Do not modify position.
 
@@ -36,10 +64,10 @@ export class Bee extends CGFobject {
     }
 
     turn(radians) {
-        console.log(`Bee.turn(): radians: ${radians}`);
+        // console.log(`Bee.turn(): radians: ${radians}`);
         this._orientation += radians;
 
-        mat4.rotateY(this.rotation, this.rotation);
+        // mat4.rotateY(this.rotation, this.rotation);
 
         // vec3.rotateY(
         //     this._velocity,
@@ -53,8 +81,14 @@ export class Bee extends CGFobject {
 
     /// Like display, but only for modifying state variables.
     update() {
+        const normalizedVelocity = vec3.create();
+        vec3.normalize(normalizedVelocity, this._velocity);
+        
+        const angleDiff = vec3_angle(this._velocity, this.rotation());
+        console.log(`Bee.update():\n  velocity: ${this._velocity}\n  rotation: ${this.rotation()}\n  angleDiff: ${angleDiff}`);
+        // vec3_rotateX(this._velocity, this._velocity, this._position, angleDiff);
         vec3.add(this._position, this._position, this._velocity);
-        console.log(`Bee.update(): pos: ${this._position}, vel: ${this._velocity}`);
+        // console.log(`Bee.update(): pos: ${this._position}, vel: ${this._velocity}`);
     }
 
     /// Move the bee to the center and stop all movement.

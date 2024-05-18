@@ -135,8 +135,8 @@ export class MyScene extends CGFscene {
     let y = 0;
     let rotate = 0;
     // if (keysPressed) console.log(`GUI text: "${text}"`);
-    if (text.includes("W")) this.bee.accelerate(-SPEED_DELTA);
-    if (text.includes("S")) this.bee.accelerate(+SPEED_DELTA);
+    if (text.includes("W")) this.bee.accelerate(+SPEED_DELTA);
+    if (text.includes("S")) this.bee.accelerate(-SPEED_DELTA);
     if (text.includes("^")) {} // this.bee.accelerate(0, +SPEED_DELTA);
     if (text.includes("v")) {} // this.bee.accelerate(0, -SPEED_DELTA);
     
