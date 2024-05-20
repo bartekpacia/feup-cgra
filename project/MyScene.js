@@ -41,7 +41,7 @@ export class MyScene extends CGFscene {
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
     this.pollenTexture = new CGFtexture(this, "images/pollen.jpg");
-    this.beeTexture = new CGFtexture(this, "images/BeeTexture.jpeg" );
+    this.beeTexture = new CGFtexture(this, "images/BeeTexture.jpeg");
 
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
@@ -80,7 +80,6 @@ export class MyScene extends CGFscene {
     this.didUpdateCamera = true;
     this.cameraToggleReady = true;
     this.newCameraPosition = vec3.create();
-   
 
     // Objects connected to MyInterface
     this.displayAxis = true;
@@ -208,7 +207,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.translate(...splatVec3(this.beePosition));
     this.beeAppearance.apply();
-    this.rotate(-Math.PI/2.0,1,0, 0);
+    this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.myBee.display();
     this.popMatrix();
 
@@ -277,16 +276,15 @@ export class MyScene extends CGFscene {
     }
     this.popMatrix();
 
-   //displaying the rock 
+    //displaying the rock
     this.pushMatrix();
     this.translate(3, 0, 3);
     this.myRock.display();
     this.popMatrix();
 
-
     //display rock boudlers
     this.pushMatrix();
-    this.translate(5,0,5);
+    this.translate(5, 0, 5);
     this.myRockSet.display();
     this.popMatrix();
 
