@@ -18,7 +18,7 @@ import { MyBee } from "./MyBee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 const SPEED_DELTA = 0.01;
-const ROTATION_DELTA = 0.1;
+const ROTATION_DELTA = (2 * Math.PI) / 360;
 
 export class MyScene extends CGFscene {
   constructor() {

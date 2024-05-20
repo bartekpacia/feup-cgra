@@ -8,12 +8,17 @@ export class MyBee extends CGFobject {
     super(scene);
     this.initBuffers();
 
-    // Position is not to be modified directly, but by simulation.
-    this._position = vec3.create();
-
     // Angle around the XY axis in radians. From 0 to 2π.
+    this._speed = 0;
     this._orientation = 0;
+
+    // Velocity is determined by orientation and speed.
+    this._rotation = vec3.create();
     this._velocity = vec3.create();
+
+    // Position is not to be modified directly, but by simulation of velocity
+    // during time.
+    this._position = vec3.create();
 
     // Create three spheres for head, body, and abdomen
     this.head = new MySphere(scene, 20, 20);
@@ -50,19 +55,10 @@ export class MyBee extends CGFobject {
     // }
   }
 
-  // Get the unit rotation vector. It will always be perpendicular to the XZ
-  // plane.
-  rotation() {
-    return vec3.fromValues(
-      Math.cos(this._orientation),
-      0,
-      -Math.sin(this._orientation),
-    );
-  }
-
-  accelerate(speedDelta) {
+    /*
     // console.log(`Bee.accelerate(): speedDelta: ${speedDelta}`);
     // if (this._velocity[0] == 0 && this._velocity[1] == 0 && this._velocity[2] == 0) {
+
 
     const normalizedRotation = vec3.create();
     vec3.normalize(normalizedRotation, this.rotation());
@@ -88,30 +84,50 @@ export class MyBee extends CGFobject {
     // );
     // rotate(a,x,y,z){mat4.rotate(this.activeMatrix,this.activeMatrix,a,[x,y,z])}
   }
+  */
 
+  // Get the unit rotation vector. It will always be perpendicular to the XZ
+  // plane.
+  rotation() {
+    return vec3.fromValues(
+      Math.cos(this._orientation),
+      0,
+      -Math.sin(this._orientation),
+    );
+  }
+
+  accelerate(speedDelta) {
+    this._speed += speedDelta;
+  }
+  
   turn(radians) {
-    // console.log(`Bee.turn(): radians: ${radians}`);
     this._orientation += radians;
-
-    // mat4.rotateY(this.rotation, this.rotation);
-
-    // vec3.rotateY(
-    //     this._velocity,
-    //     this._velocity,
-    //     this._position,
-    //     this._orientation,
-    // );
-
-    // TODO: Recalculate "velocity" vector
   }
 
   /// Like display, but only for modifying state variables.
   update() {
+    vec3.normalize(this._velocity, this._velocity);
+    // Normalize orientation
+    this._orientation = this._orientation % (Math.PI * 2);
+    // First, compute the new rotation vector.
+    vec3.normalize(this._rotation, this.rotation());
+    this._rotation[0] = this._rotation[0] * this._speed;
+    this._rotation[1] = this._rotation[1] * this._speed;
+    this._rotation[2] = this._rotation[2] * this._speed;
+
+    // Then compute the new velocity vector
+    vec3.dot(this._velocity, this._velocity, this._rotation);
+    this._velocity[0] = this._velocity[0] + this._rotation[0];
+    this._velocity[1] = this._velocity[1] + this._rotation[1];
+    this._velocity[2] = this._velocity[2] + this._rotation[2];
+
     const normalizedVelocity = vec3.create();
     vec3.normalize(normalizedVelocity, this._velocity);
 
     const angleDiff = vec3_angle(this._velocity, this.rotation());
     console.log(`Bee.update():
+    orientation: ${(this._orientation * (180/Math.PI)).toFixed(2)}°
+    speed: ${this._speed.toFixed(2)}
     velocity: ${vec3_print(this._velocity)}
     rotation: ${vec3_print(this.rotation())}
     angleDiff: ${angleDiff.toFixed(2)}`
