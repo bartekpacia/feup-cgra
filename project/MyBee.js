@@ -109,7 +109,15 @@ export class MyBee extends CGFobject {
     }
 
     // Detect collisions with pollens
+    {
+      for (const flower of this.scene.myGarden.flowers) {
+        console.log(`some flower at position ${flower.position}`);
 
+        compareFloats(actual, expected, tolerance)
+
+        inside
+      }
+    }
   }
 
   /// Move the bee to the center and stop all movement.
