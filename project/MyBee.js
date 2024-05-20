@@ -87,9 +87,6 @@ export class MyBee extends CGFobject {
     this._velocity[1] = this._rotation[1] * this._speed;
     this._velocity[2] = this._rotation[2] * this._speed;
 
-    const normalizedVelocity = vec3.create();
-    vec3.normalize(normalizedVelocity, this._velocity);
-
     console.log(`Bee.update():
     orientation: ${(this._orientation * (180/Math.PI)).toFixed(2)}°
     speed: ${this._speed.toFixed(2)}
