@@ -4,7 +4,7 @@ import { getRandomInt } from "./common.js";
 import { Triangle } from "./primitives/Triangle.js";
 
 export class MyGarden extends CGFobject {
-  constructor(scene, xLength, zLength, space = 8) {
+  constructor(scene, xLength, zLength, space = 12 ) {
     super(scene);
 
     this.xLenght = xLength;
