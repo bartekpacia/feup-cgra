@@ -103,6 +103,7 @@ export class Bee extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(...splatVec3(this._position));
         this.scene.rotate(this._orientation, 0, 1, 0);
+        this.rotate(-Math.PI / 2.0, 1, 0, 0);
         
         this.scene.pushMatrix();
         this.scene.translate(-0.3, 0.6, -0.5);

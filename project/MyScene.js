@@ -13,11 +13,11 @@ import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
-import { Bee } from "./Bee.js";
+// import { Bee } from "./Bee.js";
 import { MyBee } from "./MyBee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
-const SPEED_DELTA = 0.1;
+const SPEED_DELTA = 0.01;
 const ROTATION_DELTA = 0.1;
 
 export class MyScene extends CGFscene {
@@ -69,9 +69,9 @@ export class MyScene extends CGFscene {
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
     this.myRockSet = new MyRockSet(this, 13);
-    this.bee = new Bee(this);
+    this.bee = new MyBee(this);
     //this.bee = new MyUnitCube(this);
-    this.myBee = new MyBee(this);
+    // this.myBee = new MyBee(this);
     this.cameraFocusBee = false;
 
     // State variables
@@ -196,12 +196,12 @@ export class MyScene extends CGFscene {
     this.bee.display();
     // ---- BEGIN Primitive drawing section
 
-    this.pushMatrix();
-    // this.translate(...splatVec3(this.bee.position));
-    this.beeAppearance.apply();
-    this.rotate(-Math.PI / 2.0, 1, 0, 0);
-    this.myBee.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // // this.translate(...splatVec3(this.bee.position));
+    // this.beeAppearance.apply();
+    // this.rotate(-Math.PI / 2.0, 1, 0, 0);
+    // this.myBee.display();
+    // this.popMatrix();
 
     if (this.cameraFocusBee) {
       if (!this.didUpdateCameraState) {

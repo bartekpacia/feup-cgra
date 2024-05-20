@@ -72,3 +72,7 @@ export function vec3_angle(a, b) {
     cosine = mag && vec3.dot(a, b) / mag;
   return Math.acos(Math.min(Math.max(cosine, -1), 1));
 }
+
+export function vec3_print(v) {
+  return `(${v[0].toFixed(2)}, ${v[1].toFixed(2)}, ${v[2].toFixed(2)})`;
+}
