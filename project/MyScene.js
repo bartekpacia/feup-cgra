@@ -171,7 +171,8 @@ export class MyScene extends CGFscene {
 
   update(dt) {
     this.checkKeys();
-    this.bee.update(dt);
+    // if called here, there is a strange camera glitch when camera follows the bee
+    // this.bee.update();
   }
 
   display() {
@@ -188,7 +189,7 @@ export class MyScene extends CGFscene {
     // this.bee.update();
     
     if (this.displayAxis) this.axis.display();
-
+    this.bee.update();
     this.bee.display();
 
     if (this.cameraFocusBee) {
