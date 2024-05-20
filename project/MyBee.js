@@ -55,37 +55,6 @@ export class MyBee extends CGFobject {
     // }
   }
 
-    /*
-    // console.log(`Bee.accelerate(): speedDelta: ${speedDelta}`);
-    // if (this._velocity[0] == 0 && this._velocity[1] == 0 && this._velocity[2] == 0) {
-
-
-    const normalizedRotation = vec3.create();
-    vec3.normalize(normalizedRotation, this.rotation());
-    normalizedRotation[0] = normalizedRotation[0] * speedDelta;
-    normalizedRotation[1] = normalizedRotation[1] * speedDelta;
-    normalizedRotation[2] = normalizedRotation[2] * speedDelta;
-
-    this._velocity[0] = this._velocity[0] + normalizedRotation[0];
-    this._velocity[1] = this._velocity[1] + normalizedRotation[1];
-    this._velocity[2] = this._velocity[2] + normalizedRotation[2];
-
-    // normalizedRotation.add(normalizedRotation, normalizedRotation, ACC);
-
-    // vec3.set(
-    //     this._velocity + ,
-    //     this._velocity[0],
-    //     this._velocity[1],this._velocity[2] + 0.1 * speedDelta);
-
-    // TODO: Multiply velocity matrix. Do not modify position.
-
-    // mat4.rotateY(
-
-    // );
-    // rotate(a,x,y,z){mat4.rotate(this.activeMatrix,this.activeMatrix,a,[x,y,z])}
-  }
-  */
-
   // Get the unit rotation vector. It will always be perpendicular to the XZ
   // plane.
   rotation() {
@@ -121,17 +90,12 @@ export class MyBee extends CGFobject {
     const normalizedVelocity = vec3.create();
     vec3.normalize(normalizedVelocity, this._velocity);
 
-    const angleDiff = vec3_angle(this._velocity, this.rotation());
     console.log(`Bee.update():
     orientation: ${(this._orientation * (180/Math.PI)).toFixed(2)}°
     speed: ${this._speed.toFixed(2)}
-    velocity: ${vec3_print(this._velocity)}
-    rotation: ${vec3_print(this.rotation())}
-    angleDiff: ${angleDiff.toFixed(2)}`
+    velocity: ${vec3_print(this._velocity)}`
     );
-    // vec3_rotateX(this._velocity, this._velocity, this._position, angleDiff);
     vec3.add(this._position, this._position, this._velocity);
-    // console.log(`Bee.update(): pos: ${this._position}, vel: ${this._velocity}`);
   }
 
   /// Move the bee to the center and stop all movement.
