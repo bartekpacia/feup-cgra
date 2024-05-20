@@ -13,8 +13,6 @@ export class MyPollen extends CGFobject {
 	}
 
     display() {
-        // super.display(); - commented out to ignore the default object
-
         this.pollenAppearance.apply();
         this.scene.pushMatrix();
         this.scene.scale(1, 1, 1.3);

@@ -10,10 +10,8 @@ import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
-import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
-// import { Bee } from "./Bee.js";
 import { MyBee } from "./MyBee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
@@ -67,11 +65,8 @@ export class MyScene extends CGFscene {
     this.mySphere = new MySphere(this, 20, 30);
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
-    this.myFlower = new MyFlower(this, 5, 5);
     this.myRockSet = new MyRockSet(this, 13);
     this.bee = new MyBee(this);
-    //this.bee = new MyUnitCube(this);
-    // this.myBee = new MyBee(this);
     this.cameraFocusBee = false;
 
     // State variables
@@ -256,11 +251,6 @@ export class MyScene extends CGFscene {
     this.translate(0, 0, 9);
     this.rotate(Math.PI / 2.0, 1, 0, 0);
     this.mySphere.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.translate(10, 0, 10);
-    this.myFlower.display();
     this.popMatrix();
 
     // Display garden
