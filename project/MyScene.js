@@ -7,12 +7,14 @@ import {
 } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MyRock } from "./MyRock.js";
+import { MyRockSet } from "./MyRockSet.js";
 import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
 import { Bee } from "./Bee.js";
+import { MyBee } from "./MyBee.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 const SPEED_DELTA = 0.1;
@@ -39,6 +41,7 @@ export class MyScene extends CGFscene {
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
     this.pollenTexture = new CGFtexture(this, "images/pollen.jpg");
+    this.beeTexture = new CGFtexture(this, "images/BeeTexture.jpeg");
 
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
@@ -53,6 +56,10 @@ export class MyScene extends CGFscene {
     this.panoramaAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
     this.panoramaAppearance.setEmission(1, 1, 1, 1);
 
+    this.beeAppearance = new CGFappearance(this);
+    this.beeAppearance.setTexture(this.beeTexture);
+    this.beeAppearance.setTextureWrap("REPEAT", "REPEAT");
+
     // Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
@@ -61,7 +68,10 @@ export class MyScene extends CGFscene {
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
     this.myFlower = new MyFlower(this, 5, 5);
+    this.myRockSet = new MyRockSet(this, 13);
     this.bee = new Bee(this);
+    //this.bee = new MyUnitCube(this);
+    this.myBee = new MyBee(this);
     this.cameraFocusBee = false;
 
     // State variables
@@ -184,6 +194,14 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     this.bee.display();
+    // ---- BEGIN Primitive drawing section
+
+    this.pushMatrix();
+    // this.translate(...splatVec3(this.bee.position));
+    this.beeAppearance.apply();
+    this.rotate(-Math.PI / 2.0, 1, 0, 0);
+    this.myBee.display();
+    this.popMatrix();
 
     if (this.cameraFocusBee) {
       if (!this.didUpdateCameraState) {
@@ -235,7 +253,8 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.sphereAppearance.apply();
-    this.translate(0, 0, 5);
+    this.translate(0, 0, 9);
+    this.rotate(Math.PI / 2.0, 1, 0, 0);
     this.mySphere.display();
     this.popMatrix();
 
@@ -255,10 +274,16 @@ export class MyScene extends CGFscene {
     }
     this.popMatrix();
 
+    //displaying the rock
     this.pushMatrix();
-    // this.appearance.apply();
     this.translate(3, 0, 3);
     this.myRock.display();
+    this.popMatrix();
+
+    //display rock boudlers
+    this.pushMatrix();
+    this.translate(5, 0, 5);
+    this.myRockSet.display();
     this.popMatrix();
 
     // ---- END Primitive drawing section
