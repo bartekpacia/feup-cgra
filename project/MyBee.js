@@ -19,6 +19,8 @@ export class MyBee extends CGFobject {
     // Position is not to be modified directly, but by simulation of velocity
     // during time.
     this._position = vec3.create();
+    
+    this._speedState = "ACCELERATING"; // OR "DECELERATING"
 
     // Create three spheres for head, body, and abdomen
     this.head = new MySphere(scene, 20, 20);
@@ -61,38 +63,53 @@ export class MyBee extends CGFobject {
     return vec3.fromValues(
       Math.cos(this._orientation),
       0,
-      -Math.sin(this._orientation),
+      -Math.sin(this._orientation)
     );
   }
 
   accelerate(speedDelta) {
     this._speed += speedDelta;
+    if (speedDelta > 0) {
+      this._speedState = "ACCELERATING";
+    } else {
+      this._speedState = "DECELERATING";
+    }
   }
-  
+
   turn(radians) {
-    this._orientation += radians;
+    if (this._speedState == "ACCELERATING") {
+      this._orientation += radians;
+    } else if (this._speedState == "DECELERATING"){
+      this._orientation -= radians;
+    } else {
+      console.error("Invalid speed state: " + this._speedState);
+    }
   }
 
-  /// Like display, but only for modifying state variables.
-  update() {
-    vec3.normalize(this._velocity, this._velocity);
-    // Normalize orientation
-    this._orientation = this._orientation % (Math.PI * 2);
-    // First, compute the new rotation vector.
-    vec3.normalize(this._rotation, this.rotation());
+  update(dt) {
+    // Perform movement
+    {
+      vec3.normalize(this._velocity, this._velocity);
+      // Normalize orientation
+      this._orientation = this._orientation % (Math.PI * 2);
+      // First, compute the new rotation vector.
+      vec3.normalize(this._rotation, this.rotation());
 
-    // Then, compute the new velocity vector.
-    vec3.dot(this._velocity, this._velocity, this._rotation);
-    this._velocity[0] = this._rotation[0] * this._speed;
-    this._velocity[1] = this._rotation[1] * this._speed;
-    this._velocity[2] = this._rotation[2] * this._speed;
+      // Then, compute the new velocity vector.
+      vec3.dot(this._velocity, this._velocity, this._rotation);
+      this._velocity[0] = this._rotation[0] * this._speed;
+      this._velocity[1] = this._rotation[1] * this._speed;
+      this._velocity[2] = this._rotation[2] * this._speed;
 
-    console.log(`Bee.update():
-    orientation: ${(this._orientation * (180/Math.PI)).toFixed(2)}°
-    speed: ${this._speed.toFixed(2)}
-    velocity: ${vec3_print(this._velocity)}`
-    );
-    vec3.add(this._position, this._position, this._velocity);
+      console.log(`Bee.update():
+  orientation: ${(this._orientation * (180 / Math.PI)).toFixed(2)}°
+  speed: ${this._speed.toFixed(2)}
+  velocity: ${vec3_print(this._velocity)}`);
+      vec3.add(this._position, this._position, this._velocity);
+    }
+
+    // Detect collisions with pollens
+
   }
 
   /// Move the bee to the center and stop all movement.
@@ -217,13 +234,17 @@ export class MyBee extends CGFobject {
 
   initBuffers() {
     this.vertices = [
-        0, 0, 0,
-        this.rotation[0] * 3, this.rotation[1] * 3, this.rotation[2] * 3,
-    ]
+      0,
+      0,
+      0,
+      this.rotation[0] * 3,
+      this.rotation[1] * 3,
+      this.rotation[2] * 3,
+    ];
 
     this.indices = [0, 1];
 
     this.primitiveType = this.scene.gl.LINES;
-	this.initGLBuffers();
+    this.initGLBuffers();
   }
 }

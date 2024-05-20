@@ -19,8 +19,9 @@ const SPEED_DELTA = 0.01;
 const ROTATION_DELTA = (2 * Math.PI) / 360;
 
 export class MyScene extends CGFscene {
-  constructor() {
+  constructor(myInterface) {
     super();
+    this.myInterface = myInterface;
   }
 
   init(application) {
@@ -85,6 +86,7 @@ export class MyScene extends CGFscene {
     this.initCameras();
     this.initLights();
     this.enableTextures(true);
+    this.setUpdatePeriod(1000 / 60); // 60 FPS, 16.67ms
   }
 
   initLights() {
@@ -148,9 +150,6 @@ export class MyScene extends CGFscene {
     if (text.includes("A")) this.bee.turn(+ROTATION_DELTA);
     if (text.includes("D")) this.bee.turn(-ROTATION_DELTA);
 
-    // const translationVec = vec3.fromValues(x, y, z);
-    // vec3.add(this.bee.position, this.bee.position, translationVec);
-
     // Enforce a small second cooldown for some actions
     if (text.includes(" ")) {
       if (this.cameraSwitchReady) {
@@ -170,6 +169,11 @@ export class MyScene extends CGFscene {
     }
   }
 
+  update(dt) {
+    this.checkKeys();
+    this.bee.update(dt);
+  }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -181,22 +185,11 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
-    // ---- BEGIN State update section
-    this.checkKeys();
-    this.bee.update();
+    // this.bee.update();
     
-    // ---- BEGIN Primitive drawing section
     if (this.displayAxis) this.axis.display();
 
     this.bee.display();
-    // ---- BEGIN Primitive drawing section
-
-    // this.pushMatrix();
-    // // this.translate(...splatVec3(this.bee.position));
-    // this.beeAppearance.apply();
-    // this.rotate(-Math.PI / 2.0, 1, 0, 0);
-    // this.myBee.display();
-    // this.popMatrix();
 
     if (this.cameraFocusBee) {
       if (!this.didUpdateCameraState) {
