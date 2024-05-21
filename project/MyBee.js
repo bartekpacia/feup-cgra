@@ -20,7 +20,7 @@ export class MyBee extends CGFobject {
 
     // Position is not to be modified directly, but by simulation of velocity
     // during time.
-    this._position = vec3.create();
+    this._position = vec3.fromValues(0, 5, 0);
     
     this._speedState = "ACCELERATING"; // OR "DECELERATING"
 

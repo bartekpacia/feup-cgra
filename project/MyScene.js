@@ -14,7 +14,7 @@ import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
 import { MyBee } from "./MyBee.js";
 
-const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
+const CAM_TRANSLATION_VEC = vec3.fromValues(15, 15, 15);
 const SPEED_DELTA = 0.01;
 const ROTATION_DELTA = (2 * Math.PI) / 360;
 
@@ -45,6 +45,7 @@ export class MyScene extends CGFscene {
     this.planeAppearance = new CGFappearance(this);
     this.planeAppearance.setTexture(this.planeTexture);
     this.planeAppearance.setTextureWrap("REPEAT", "REPEAT");
+    this.planeAppearance.setEmission(0.5, 0.5, 0.5, 0.5);
 
     this.sphereAppearance = new CGFappearance(this);
     this.sphereAppearance.setTexture(this.sphereTexture);
@@ -71,7 +72,7 @@ export class MyScene extends CGFscene {
     this.cameraFocusBee = false;
 
     // State variables
-    this.staticCameraPosition = vec3.fromValues(6, 6, 5); // Position of camera when in not-follow (static) mode
+    this.staticCameraPosition = CAM_TRANSLATION_VEC; // Position of camera when in not-follow (static) mode
     this.staticCameraTarget = vec3.create(); // Target of camera when in not-follow (static) mode
     this.didUpdateCameraState = true;
     this.cameraSwitchReady = true;
@@ -234,7 +235,7 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.planeAppearance.apply();
-    this.translate(0, -100, 0);
+    this.translate(0, -4, 0);
     this.scale(400, 400, 400);
     this.rotate(-Math.PI / 2.0, 1, 0, 0);
     this.plane.display();
