@@ -76,3 +76,15 @@ export function vec3_angle(a, b) {
 export function vec3_print(v) {
   return `(${v[0].toFixed(2)}, ${v[1].toFixed(2)}, ${v[2].toFixed(2)})`;
 }
+
+export function areCloseEnough(actual, expected, tolerance) {
+  if (actual - tolerance > expected) {
+    return false;
+  }
+
+  if (actual + tolerance < expected) {
+    return false;
+  }
+
+  return true;
+}

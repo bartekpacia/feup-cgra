@@ -1,7 +1,9 @@
 import { CGFobject } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
 import { MyCylinder } from "./MyCylinder.js";
-import { splatVec3, vec3_rotateX, vec3_angle, vec3_print } from "./common.js";
+import { splatVec3, vec3_rotateX, vec3_angle, vec3_print, areCloseEnough } from "./common.js";
+
+const COLLECTION_RADIUS = 3;
 
 export class MyBee extends CGFobject {
   constructor(scene) {
@@ -21,6 +23,9 @@ export class MyBee extends CGFobject {
     this._position = vec3.create();
     
     this._speedState = "ACCELERATING"; // OR "DECELERATING"
+
+    this._debugDisplayCollectionSphere = false;
+    this._debugCollectionSphere = new MySphere(scene);
 
     // Create three spheres for head, body, and abdomen
     this.head = new MySphere(scene, 20, 20);
@@ -101,21 +106,22 @@ export class MyBee extends CGFobject {
       this._velocity[1] = this._rotation[1] * this._speed;
       this._velocity[2] = this._rotation[2] * this._speed;
 
-      console.log(`Bee.update():
-  orientation: ${(this._orientation * (180 / Math.PI)).toFixed(2)}°
-  speed: ${this._speed.toFixed(2)}
-  velocity: ${vec3_print(this._velocity)}`);
+  //     console.log(`Bee.update():
+  // orientation: ${(this._orientation * (180 / Math.PI)).toFixed(2)}°
+  // speed: ${this._speed.toFixed(2)}
+  // velocity: ${vec3_print(this._velocity)}`);
       vec3.add(this._position, this._position, this._velocity);
     }
 
     // Detect collisions with pollens
     {
       for (const flower of this.scene.myGarden.flowers) {
-        console.log(`some flower at position ${flower.position}`);
-
-        compareFloats(actual, expected, tolerance)
-
-        inside
+        const insideX = areCloseEnough(this._position[0], flower.position[0] /* expected */, COLLECTION_RADIUS /* tolerance */);
+        const insideY = areCloseEnough(this._position[1], flower.position[1] /* expected */, COLLECTION_RADIUS /* tolerance */);
+        const insideZ = areCloseEnough(this._position[2], flower.position[2] /* expected */, COLLECTION_RADIUS /* tolerance */);
+        if (insideX && insideY && insideZ) {
+          console.log("Bee collided with a flower at position " + flower.position);
+        }
       }
     }
   }
@@ -129,16 +135,23 @@ export class MyBee extends CGFobject {
   }
 
   display() {
-    this.scene.beeAppearance.apply();
-
     this.scene.pushMatrix();
     this.scene.translate(...splatVec3(this._position));
     this.scene.rotate(this._orientation, 0, 1, 0);
+
+    if (this._debugDisplayCollectionSphere) {
+      this.scene.pushMatrix();
+      this.scene.scale(COLLECTION_RADIUS, COLLECTION_RADIUS, COLLECTION_RADIUS);
+      this._debugCollectionSphere.display();
+      this.scene.popMatrix();
+    }
 
     // Set the bee in the correct orientation
     this.scene.rotate(-Math.PI / 2, 1, 0, 0);
     this.scene.rotate(-Math.PI / 2, 0, 0, 1);
     this.scene.translate(0, 1.5, 0.5);
+
+    this.scene.beeAppearance.apply();
 
     // Draw the head
     this.scene.pushMatrix();
