@@ -122,10 +122,10 @@ export class MyBee extends CGFobject {
 
   /// Move the bee to the center and stop all movement.
   reset() {
-    console.log(`Bee.reset()`);
     vec3.set(this._position, 0, 0, 0);
     vec3.set(this._velocity, 0, 0, 0);
     this._orientation = 0;
+    this._speed = 0;
   }
 
   display() {
