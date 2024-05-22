@@ -4,65 +4,55 @@ import { MyRock } from "./MyRock.js";
 export class MyRockSet extends CGFobject {
   constructor(scene, numRocks) {
     super(scene);
+    this.scene = scene;
     this.numRocks = numRocks;
-    this.numRows = 4;
-    this.totalRocks = 13;
-    this.currentRow = 0;
+    this.numRows = 10; // Number of rows in the pyramid
     this.rocks = [];
     this.initRocks();
   }
 
   initRocks() {
     for (let i = 0; i < this.numRocks; i++) {
-      const rock = new MyRock(this.scene, 20, 10); 
-      rock.setPosition(this.getRandomPosition());
-      rock.setScale(this.getRandomScale());
-      rock.setRotation(this.getRandomRotation());
+      const rock = new MyRock(this.scene, 20, 10);
       this.rocks.push(rock);
     }
   }
 
-  getRandomPosition() {
-    const x = Math.random() * 10 - 5; 
-    const y = Math.random() * 5;
-    const z = Math.random() * 10 - 5; 
-    return [x, y, z];
-  }
-
-  getRandomScale() {
-    const scaleX = Math.random() * 2 + 1;
-    const scaleY = Math.random() * 2 + 1; 
-    const scaleZ = Math.random() * 2 + 1; 
-    return [scaleX, scaleY, scaleZ];
-  }
-
-  getRandomRotation() {
-    const angleX = Math.random() * Math.PI * 2; 
-    const angleY = Math.random() * Math.PI * 2; 
-    const angleZ = Math.random() * Math.PI * 2; 
-    return [angleX, angleY, angleZ];
-  }
-
   display() {
     let totalRocksDisplayed = 0;
-    let rowZ = 0;
-    for (let row = this.numRows; row > 0; row--) {
-      const offsetX = (row - 1) * -0.5;
-      const offsetY = (this.numRows - row) * 2;
-      for (let i = 0; i < row; i++) {
+    const baseRadius = 5; // Base radius for the lowest row
+    const radiusDecrement = 1; // Decrease in radius for each higher row
+
+    for (let row = 0; row < this.numRows; row++) {
+      const currentRadius = baseRadius - row * radiusDecrement;
+      const rocksInRow = Math.max(1, this.numRocksInRow(row));
+      const angleIncrement = (2 * Math.PI) / rocksInRow;
+
+      for (let i = 0; i < rocksInRow; i++) {
         if (totalRocksDisplayed >= this.rocks.length) return;
-  
+
         const rock = this.rocks[totalRocksDisplayed];
+        const angle = i * angleIncrement;
+        const x = currentRadius * Math.cos(angle);
+        const z = currentRadius * Math.sin(angle);
+        const y = row * 2; // Adjust the height as needed
+
         this.scene.pushMatrix();
-        this.scene.translate(i + offsetX, offsetY, rowZ);
+        this.scene.translate(x, y, z);
+        this.scene.scale(...rock.scale);
+        this.scene.rotate(rock.rotation[0], 1, 0, 0);
+        this.scene.rotate(rock.rotation[1], 0, 1, 0);
+        this.scene.rotate(rock.rotation[2], 0, 0, 1);
         rock.display();
         this.scene.popMatrix();
-  
+
         totalRocksDisplayed++;
       }
-      rowZ++;
     }
   }
-  
-  
+
+  numRocksInRow(row) {
+    // Calculate the number of rocks in a row
+    return this.numRows - row;
+  }
 }

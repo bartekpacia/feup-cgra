@@ -69,9 +69,9 @@ export class MyBee extends CGFobject {
 
         //Draw the legs attached to the body
         for(let i = 0; i < 2; i++){
-            this.scene.setAmbient(0, 0, 0, 1); // Black ambient color
-            this.scene.setDiffuse(0, 0, 0, 1); // Black diffuse color
-            this.scene.setSpecular(0, 0, 0, 1); // Black specular color
+            this.scene.setAmbient(0, 0, 0, 1);
+            this.scene.setDiffuse(0, 0, 0, 1); 
+            this.scene.setSpecular(0, 0, 0, 1); 
 
             this.scene.pushMatrix();
             this.scene.translate(-0.25 + i*0.8, -0.5, -2); 
@@ -84,9 +84,9 @@ export class MyBee extends CGFobject {
          //Draw the legs attached to the abdomen
          for (let i = 0; i < 2; i++) { // Adjusted to loop only twice for the pairs of abdomen legs
             for (let j = 0; j < 2; j++) { // Loop to create legs in each pair
-                this.scene.setAmbient(0, 0, 0, 1); // Black ambient color
-                this.scene.setDiffuse(0, 0, 0, 1); // Black diffuse color
-                this.scene.setSpecular(0, 0, 0, 1); // Black specular color
+                this.scene.setAmbient(0, 0, 0, 1); 
+                this.scene.setDiffuse(0, 0, 0, 1); 
+                this.scene.setSpecular(0, 0, 0, 1);
 
                 this.scene.pushMatrix();
                 // Position the legs at the abdomen on both sides of the bee

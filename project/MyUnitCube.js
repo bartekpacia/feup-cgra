@@ -1,9 +1,10 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject, CGFappearance } from '../lib/CGF.js';
 
 export class MyUnitCube extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.initBuffers();
+        this.initTextures();
 	}
 
 	initBuffers() {
@@ -101,8 +102,44 @@ export class MyUnitCube extends CGFobject {
         ];
 
 
-	    this.primitiveType = this.scene.gl.TRIANGLES;
+        // Define texture coordinates
+        this.texCoords = [
+            0, 1, // BOTTOM (0-3)
+            1, 1,
+            1, 0,
+            0, 0,
+            0, 1, // FRONT (4-7)
+            1, 1,
+            1, 0,
+            0, 0,
+            0, 1, // RIGHT (8-11)
+            1, 1,
+            1, 0,
+            0, 0,
+            0, 1, // BACK (12-15)
+            1, 1,
+            1, 0,
+            0, 0,
+            0, 1, // LEFT (16-19)
+            1, 1,
+            1, 0,
+            0, 0,
+            0, 1, // TOP (20-23)
+            1, 1,
+            1, 0,
+            0, 0,
+        ];
 
-	    this.initGLBuffers();
+	    this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
 	}
+    initTextures() {
+        this.texture = new CGFappearance(this.scene);
+        this.texture.loadTexture('images/Lidtexture.jpg'); 
+    }
+
+    display() {
+        this.texture.apply();
+        super.display();
+      }
 }
