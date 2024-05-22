@@ -13,6 +13,7 @@ import { MyGarden } from "./MyGarden.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
 import { MyBee } from "./MyBee.js";
+import { Hive } from "./Hive.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(15, 15, 15);
 const SPEED_DELTA = 0.01;
@@ -69,6 +70,7 @@ export class MyScene extends CGFscene {
     this.myGarden = new MyGarden(this, 3, 2);
     this.myRockSet = new MyRockSet(this, 13);
     this.bee = new MyBee(this);
+    this.hives = [new Hive(this, [-3, 0, 4])];
     this.cameraFocusBee = false;
 
     // State variables
@@ -188,7 +190,9 @@ export class MyScene extends CGFscene {
     
     if (this.displayAxis) this.axis.display();
     this.bee.update();
+
     this.bee.display();
+    for (const hive of this.hives) hive.display();
 
     if (this.cameraFocusBee) {
       if (!this.didUpdateCameraState) {

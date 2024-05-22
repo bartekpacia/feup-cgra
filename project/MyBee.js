@@ -126,7 +126,7 @@ export class MyBee extends CGFobject {
       vec3.add(this._position, this._position, this._velocity);
     }
 
-    // Detect possible pickup for with pollens
+    // Detect collisions
     {
       for (const flower of this.scene.myGarden.flowers) {
         const insideX = areCloseEnough(flower.position[0], this._position[0], COLLECTION_RADIUS);
@@ -139,6 +139,22 @@ export class MyBee extends CGFobject {
           if (flower.pollen != null) {
             this.pollen = flower.pollen;
             flower.pollen = null;
+          }
+        }
+      }
+
+      for (const hive of this.scene.hives) {
+        const insideX = areCloseEnough(hive.position[0], this._position[0], COLLECTION_RADIUS);
+        const insideY = areCloseEnough(hive.position[1], this._position[1], COLLECTION_RADIUS);
+        const insideZ = areCloseEnough(hive.position[2], this._position[2], COLLECTION_RADIUS);
+
+        console.log(`hive ${hive.position} bee ${this._position}`)
+        if (insideX && insideY && insideZ) {
+          console.log("Bee collided with a hive at position " + hive.position);
+
+          if (this.pollen != null) {
+            hive.pollens.push(this.pollen);
+            this.pollen = null;
           }
         }
       }
