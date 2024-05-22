@@ -132,10 +132,7 @@ export class MyBee extends CGFobject {
         const insideX = areCloseEnough(flower.position[0], this._position[0], COLLECTION_RADIUS);
         const insideY = areCloseEnough(flower.position[1], this._position[1], COLLECTION_RADIUS);
         const insideZ = areCloseEnough(flower.position[2], this._position[2], COLLECTION_RADIUS);
-
         if (insideX && insideY && insideZ) {
-          console.log("Bee collided with a flower at position " + flower.position);
-
           if (flower.pollen != null) {
             this.pollen = flower.pollen;
             flower.pollen = null;
@@ -147,11 +144,7 @@ export class MyBee extends CGFobject {
         const insideX = areCloseEnough(hive.position[0], this._position[0], COLLECTION_RADIUS);
         const insideY = areCloseEnough(hive.position[1], this._position[1], COLLECTION_RADIUS);
         const insideZ = areCloseEnough(hive.position[2], this._position[2], COLLECTION_RADIUS);
-
-        console.log(`hive ${hive.position} bee ${this._position}`)
         if (insideX && insideY && insideZ) {
-          console.log("Bee collided with a hive at position " + hive.position);
-
           if (this.pollen != null) {
             hive.pollens.push(this.pollen);
             this.pollen = null;
