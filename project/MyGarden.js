@@ -7,14 +7,14 @@ export class MyGarden extends CGFobject {
   constructor(scene, xLength, zLength, space = 12 ) {
     super(scene);
 
-    this.xLenght = xLength;
+    this.xLength = xLength;
     this.zLength = zLength;
     this.space = space;
 
     this.flowers = [];
-    for (let i = 0; i < xLength; i++) {
-      for (let j = 0; j < zLength; j++) {
-        const position = [i * this.space, 0, j * this.space];
+    for (let i = 0; i < this.xLength; i++) {
+      for (let j = 0; j < this.zLength; j++) {
+        const position = [-i * this.space, 0, -j * this.space];
         const petalCount = getRandomInt(3, 6);
         const stemPartsCount = getRandomInt(3, 6);
         this.flowers.push(new MyFlower(scene, position, petalCount, stemPartsCount));

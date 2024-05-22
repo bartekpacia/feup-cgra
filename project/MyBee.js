@@ -1,14 +1,23 @@
 import { CGFobject } from "../lib/CGF.js";
 import { MySphere } from "./MySphere.js";
 import { MyCylinder } from "./MyCylinder.js";
-import { splatVec3, vec3_rotateX, vec3_angle, vec3_print, areCloseEnough } from "./common.js";
+import {
+  splatVec3,
+  vec3_rotateX,
+  vec3_angle,
+  vec3_print,
+  areCloseEnough,
+} from "./common.js";
 
 const COLLECTION_RADIUS = 3;
+const DEFAULT_FLY_HEIGHT = 5;
 
 export class MyBee extends CGFobject {
   constructor(scene) {
     super(scene);
     this.initBuffers();
+
+    this.pollen = null;
 
     // Angle around the XY axis in radians. From 0 to 2π.
     this._speed = 0;
@@ -17,11 +26,11 @@ export class MyBee extends CGFobject {
     // Velocity is determined by orientation and speed.
     this._rotation = vec3.create();
     this._velocity = vec3.create();
-
+    
     // Position is not to be modified directly, but by simulation of velocity
     // during time.
     this._position = vec3.fromValues(0, 5, 0);
-    
+
     this._speedState = "ACCELERATING"; // OR "DECELERATING"
 
     this._debugDisplayCollectionSphere = false;
@@ -62,6 +71,10 @@ export class MyBee extends CGFobject {
     // }
   }
 
+  ascend(speedDelta) {
+    this._position[1] += speedDelta * 10;
+  }
+
   // Get the unit rotation vector. It will always be perpendicular to the XZ
   // plane.
   rotation() {
@@ -84,7 +97,7 @@ export class MyBee extends CGFobject {
   turn(radians) {
     if (this._speedState == "ACCELERATING") {
       this._orientation += radians;
-    } else if (this._speedState == "DECELERATING"){
+    } else if (this._speedState == "DECELERATING") {
       this._orientation -= radians;
     } else {
       console.error("Invalid speed state: " + this._speedState);
@@ -92,7 +105,7 @@ export class MyBee extends CGFobject {
   }
 
   update(dt) {
-    // Perform movement
+    // Perform movement by physics simulation
     {
       vec3.normalize(this._velocity, this._velocity);
       // Normalize orientation
@@ -106,21 +119,27 @@ export class MyBee extends CGFobject {
       this._velocity[1] = this._rotation[1] * this._speed;
       this._velocity[2] = this._rotation[2] * this._speed;
 
-  //     console.log(`Bee.update():
-  // orientation: ${(this._orientation * (180 / Math.PI)).toFixed(2)}°
-  // speed: ${this._speed.toFixed(2)}
-  // velocity: ${vec3_print(this._velocity)}`);
+      //     console.log(`Bee.update():
+      // orientation: ${(this._orientation * (180 / Math.PI)).toFixed(2)}°
+      // speed: ${this._speed.toFixed(2)}
+      // velocity: ${vec3_print(this._velocity)}`);
       vec3.add(this._position, this._position, this._velocity);
     }
 
-    // Detect collisions with pollens
+    // Detect possible pickup for with pollens
     {
       for (const flower of this.scene.myGarden.flowers) {
-        const insideX = areCloseEnough(this._position[0], flower.position[0] /* expected */, COLLECTION_RADIUS /* tolerance */);
-        const insideY = areCloseEnough(this._position[1], flower.position[1] /* expected */, COLLECTION_RADIUS /* tolerance */);
-        const insideZ = areCloseEnough(this._position[2], flower.position[2] /* expected */, COLLECTION_RADIUS /* tolerance */);
+        const insideX = areCloseEnough(flower.position[0], this._position[0], COLLECTION_RADIUS);
+        const insideY = areCloseEnough(flower.position[1], this._position[1], COLLECTION_RADIUS);
+        const insideZ = areCloseEnough(flower.position[2], this._position[2], COLLECTION_RADIUS);
+
         if (insideX && insideY && insideZ) {
           console.log("Bee collided with a flower at position " + flower.position);
+
+          if (flower.pollen != null) {
+            this.pollen = flower.pollen;
+            flower.pollen = null;
+          }
         }
       }
     }
@@ -232,6 +251,14 @@ export class MyBee extends CGFobject {
       this.scene.translate(-0.5 + i * 1, 0.3, 0);
       this.scene.scale(0.25, 0.25, 0.25);
       this.eyes[i].display();
+      this.scene.popMatrix();
+    }
+
+    // Draw the pollen (if any)
+    if (this.pollen != null) {
+      this.scene.pushMatrix();
+      this.scene.translate(0, -0.5, -2);
+      this.pollen.display();
       this.scene.popMatrix();
     }
 

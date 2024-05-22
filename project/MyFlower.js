@@ -77,8 +77,8 @@ export class MyFlower extends CGFobject {
     this.scene.pushMatrix();
     this.scene.translate(...this.position);
 
-    // Display the pollen
-    {
+    // Display the pollen (if any)
+    if (this.pollen != null) {
       this.scene.pushMatrix();
       this.scene.translate(...this.pollenPosition);
       this.pollen.display();

@@ -134,22 +134,17 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyA")) text += "A";
     if (this.gui.isKeyPressed("KeyS")) text += "S";
     if (this.gui.isKeyPressed("KeyD")) text += "D";
-    if (this.gui.isKeyPressed("ArrowUp")) text += "^";
-    if (this.gui.isKeyPressed("ArrowDown")) text += "v";
+    if (this.gui.isKeyPressed("ArrowUp")) text += "⬆️";
+    if (this.gui.isKeyPressed("ArrowDown")) text += "⬇️";
     if (this.gui.isKeyPressed("Space")) text += " ";
     if (this.gui.isKeyPressed("KeyR")) text += "R";
 
-    let move = 0;
-    let y = 0;
-    let rotate = 0;
-    // if (keysPressed) console.log(`GUI text: "${text}"`);
     if (text.includes("W")) this.bee.accelerate(+SPEED_DELTA);
     if (text.includes("S")) this.bee.accelerate(-SPEED_DELTA);
-    if (text.includes("^")) {} // this.bee.accelerate(0, +SPEED_DELTA);
-    if (text.includes("v")) {} // this.bee.accelerate(0, -SPEED_DELTA);
-    
     if (text.includes("A")) this.bee.turn(+ROTATION_DELTA);
     if (text.includes("D")) this.bee.turn(-ROTATION_DELTA);
+    if (text.includes("⬆️")) this.bee.ascend(SPEED_DELTA);
+    if (text.includes("⬇️")) this.bee.ascend(-SPEED_DELTA);
 
     // Enforce a small second cooldown for some actions
     if (text.includes(" ")) {
@@ -171,7 +166,7 @@ export class MyScene extends CGFscene {
   }
 
   update(dt) {
-    this.checkKeys();
+    // this.checkKeys();
     // if called here, there is a strange camera glitch when camera follows the bee
     // this.bee.update();
   }
@@ -188,6 +183,8 @@ export class MyScene extends CGFscene {
     this.applyViewMatrix();
 
     // this.bee.update();
+
+    this.checkKeys();
     
     if (this.displayAxis) this.axis.display();
     this.bee.update();
@@ -248,16 +245,12 @@ export class MyScene extends CGFscene {
     this.mySphere.display();
     this.popMatrix();
 
-    // Display garden
-    this.pushMatrix();
-    this.translate(-13, 0, -10);
     this.myGarden.display();
     if (this.displayNormals) {
       this.myGarden.enableNormalViz();
     } else {
       this.myGarden.disableNormalViz();
     }
-    this.popMatrix();
 
     //displaying the rock
     this.pushMatrix();
