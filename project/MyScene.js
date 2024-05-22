@@ -12,6 +12,11 @@ import { MySphere } from "./MySphere.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { splatVec3 } from "./common.js";
+import { MyRockSet } from "./MyRockSet.js";
+import { MyHive } from "./MyHive.js";
+import { MyUnitCube } from "./MyUnitCube.js";
+
+const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 import { MyBee } from "./MyBee.js";
 import { Hive } from "./Hive.js";
 
@@ -68,10 +73,12 @@ export class MyScene extends CGFscene {
     this.mySphere = new MySphere(this, 20, 30);
     this.myRock = new MyRock(this, 20, 20);
     this.myGarden = new MyGarden(this, 3, 2);
-    this.myRockSet = new MyRockSet(this, 13);
-    this.bee = new MyBee(this);
-    this.hives = [new Hive(this, [-3, 0, 4])];
+    this.myFlower = new MyFlower(this, 5, 5);
+    this.myunitCube = new MyUnitCube(this);
     this.cameraFocusBee = false;
+    this.myBee = new MyBee(this);
+    this.myRockSet = new MyRockSet(this, 40);
+    this.myHive = new MyHive(this,1.5,0.2,);
 
     // State variables
     this.staticCameraPosition = CAM_TRANSLATION_VEC; // Position of camera when in not-follow (static) mode
@@ -242,12 +249,12 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-    this.pushMatrix();
-    this.sphereAppearance.apply();
-    this.translate(0, 0, 9);
-    this.rotate(Math.PI / 2.0, 1, 0, 0);
-    this.mySphere.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.sphereAppearance.apply();
+    // this.translate(0, 0, 9);
+    // this.rotate(Math.PI / 2.0, 1, 0, 0);
+    // this.mySphere.display();
+    // this.popMatrix();
 
     this.myGarden.display();
     if (this.displayNormals) {
@@ -256,17 +263,27 @@ export class MyScene extends CGFscene {
       this.myGarden.disableNormalViz();
     }
 
-    //displaying the rock
-    this.pushMatrix();
-    this.translate(3, 0, 3);
-    this.myRock.display();
-    this.popMatrix();
+  //  //displaying the rock 
+  //   this.pushMatrix();
+  //   this.translate(3, 0, 3);
+  //   this.myRock.display();
+  //   this.popMatrix();
 
     //display rock boudlers
     this.pushMatrix();
-    this.translate(5, 0, 5);
+    this.scale(2,2,2);
+    this.translate(0,-10.0,-10);
     this.myRockSet.display();
     this.popMatrix();
+
+    //display a hive
+    this.pushMatrix();
+    this.scale(2,2,2);
+    this.translate(0, 0, -10);
+    this.myHive.display();
+    this.popMatrix();
+
+    
 
     // ---- END Primitive drawing section
   }
