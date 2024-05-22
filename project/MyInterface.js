@@ -14,6 +14,9 @@ export class MyInterface extends CGFinterface {
     this.gui.add(this.scene, "displayAxis").name("Display Axis");
     this.gui.add(this.scene, "displayNormals").name("Display normals");
     this.gui.add(this.scene, "scaleFactor", 0.1, 5).name("Scale Factor");
+    this.gui.add(this.scene.bee, "_orientation", 0, 2 * Math.PI).name("Bee orientation");
+    // this.gui.add(this.scene.bee, "position", 0, 2 * Math.PI).name("Bee position");
+    this.gui.add(this.scene.bee, "_debugDisplayCollectionSphere").name("Show pickup radius");
 
     this.initKeys();
 
