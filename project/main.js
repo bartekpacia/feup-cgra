@@ -4,8 +4,8 @@ import { MyInterface } from "./MyInterface.js";
 
 function main() {
   const app = new CGFapplication(document.body);
+  const myScene = new MyScene();
   const myInterface = new MyInterface();
-  const myScene = new MyScene(myInterface);
 
   app.init();
 

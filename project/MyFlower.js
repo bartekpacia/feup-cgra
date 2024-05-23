@@ -8,12 +8,10 @@ import { MyPollen } from "./MyPollen.js";
  * Flower consists of stem, center (aka stamen) and petals.
  */
 export class MyFlower extends CGFobject {
-  constructor(scene, position, petalCount = 3, stemPartsCount = 5) {
+  constructor(scene, petalCount = 3, stemPartsCount = 10) {
     super(scene);
 
     this.scene = scene;
-    this.position = position;
-
     this.petalCount = petalCount;
     this.stemPartsCount = stemPartsCount;
     this.pollenPosition = [getRandom(-0.5, 0.5), 0.5, getRandom(-0.5, 0.5)];
@@ -74,11 +72,8 @@ export class MyFlower extends CGFobject {
   }
 
   display() {
-    this.scene.pushMatrix();
-    this.scene.translate(...this.position);
-
-    // Display the pollen (if any)
-    if (this.pollen != null) {
+    // Display the pollen
+    {
       this.scene.pushMatrix();
       this.scene.translate(...this.pollenPosition);
       this.pollen.display();
@@ -129,8 +124,6 @@ export class MyFlower extends CGFobject {
       this.petals[i].display();
       this.scene.popMatrix();
     }
-
-    this.scene.popMatrix();
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
