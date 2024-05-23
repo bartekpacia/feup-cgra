@@ -242,12 +242,12 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-    this.pushMatrix();
-    this.sphereAppearance.apply();
-    this.translate(0, 0, 9);
-    this.rotate(Math.PI / 2.0, 1, 0, 0);
-    this.mySphere.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.sphereAppearance.apply();
+    // this.translate(0, 0, 9);
+    // this.rotate(Math.PI / 2.0, 1, 0, 0);
+    // this.mySphere.display();
+    // this.popMatrix();
 
     this.myGarden.display();
     if (this.displayNormals) {

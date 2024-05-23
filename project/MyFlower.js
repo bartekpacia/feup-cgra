@@ -8,7 +8,7 @@ import { MyPollen } from "./MyPollen.js";
  * Flower consists of stem, center (aka stamen) and petals.
  */
 export class MyFlower extends CGFobject {
-  constructor(scene, position, petalCount = 3, stemPartsCount = 5) {
+  constructor(scene, position, petalCount = 3, stemPartsCount = 10) {
     super(scene);
 
     this.scene = scene;
