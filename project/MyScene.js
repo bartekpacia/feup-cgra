@@ -18,7 +18,7 @@ import { MyUnitCube } from "./MyUnitCube.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(5, 5, 5);
 import { MyBee } from "./MyBee.js";
-//import { Hive } from "./Hive.js";
+import { Hive } from "./Hive.js";
 
 const CAM_TRANSLATION_VEC = vec3.fromValues(15, 15, 15);
 const SPEED_DELTA = 0.01;
