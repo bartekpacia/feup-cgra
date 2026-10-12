@@ -131,9 +131,6 @@ export class MyFlower extends CGFobject {
     }
 
     this.scene.popMatrix();
-
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
   }
 }
 
@@ -228,8 +225,5 @@ class Petal extends CGFobject {
     this.scene.scale(1, 1, -1);
     this.secondTriangle.display();
     this.scene.popMatrix();
-
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
   }
 }
